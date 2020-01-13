@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+ 
+    <!-- 父模块配置 -->
+    <parent>
+        <groupId>com.wbspool</groupId>
+        <artifactId>fastboot-comp</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+ 
+
+
+    <!-- 项目信息 -->
+    <groupId>com.kuyuntech</groupId>
+
+    <artifactId>hap-monitor</artifactId>
+
+    <version>0.0.1-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <name>hap-monitor</name>
+
+
+
+    <!-- 模块信息配置 -->
+    <modules>
+        <module>hap-monitor-core-service</module>
+        <module>hap-monitor-core-api</module>
+        <module>hap-monitor-core-restful</module>
+        <module>hap-monitor-platform</module>
+        <module>hap-monitor-mobile</module>
+    </modules>
+
+    <!-- 项目依赖版本配置 -->
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.1.0.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kuyuntech</groupId>
+                <artifactId>hap-monitor-core-restful</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                 <groupId>com.kuyuntech</groupId>
+                 <artifactId>hap-monitor-core-service</artifactId>
+                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kuyuntech</groupId>
+                <artifactId>hap-monitor-core-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>app-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>auth-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>bsnm-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>file-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>user-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>area-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>dict-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>menu-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>privilege-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>file-comp-nas-server</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>file-comp-sdk</artifactId>
+                <version>${fastboot.comp.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>bsnm-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>bsnm-comp-core-service</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>org-comp-common-restful</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.wbspool.fastboot.comp</groupId>
+                <artifactId>org-comp-core-service</artifactId>
+                <version>${fastboot.comp.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+
+
+
+    
+
+
+
+
+</project>

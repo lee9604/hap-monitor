@@ -1,0 +1,23 @@
+fastboot:
+  auth:
+    exclude:
+      urls:
+        - /
+        - /**/*
+        - /**/*.*
+        - /auth/login
+        - /auth/logout
+        - /auth/verifyCode
+        - /auth/userInfo
+        - /auth/menuTree
+        - /nas/upload
+        - /nas/download
+        - /nas/delete
+        - /nas/batchDelete
+        - /nas/spaceInfo
+        - /app/appInfo
+        - /app/logo
+        - /commonFile/download
+
+
+

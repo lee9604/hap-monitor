@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hap-monitor-core-service" />
+        <module name="hap-monitor-core-restful" />
+        <module name="hap-monitor-core-api" />
+        <module name="hap-monitor-mobile" />
+        <module name="hap-monitor-platform" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hap-monitor" target="1.8" />
+      <module name="hap-monitor-core-api" target="1.8" />
+      <module name="hap-monitor-core-restful" target="1.8" />
+      <module name="hap-monitor-core-service" target="1.8" />
+      <module name="hap-monitor-mobile" target="1.8" />
+      <module name="hap-monitor-platform" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="hap-monitor-core-api" options="-parameters" />
+      <module name="hap-monitor-core-restful" options="-parameters" />
+      <module name="hap-monitor-core-service" options="-parameters" />
+      <module name="hap-monitor-mobile" options="-parameters" />
+      <module name="hap-monitor-platform" options="-parameters" />
+    </option>
+  </component>
+</project>
