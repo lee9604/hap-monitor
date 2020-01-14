@@ -92,6 +92,6 @@ public interface UmsResourcesService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
+    List<UmsResourcesBean> findUmsResourcesByIdIn(List<Long> resourcesIdList);
 }

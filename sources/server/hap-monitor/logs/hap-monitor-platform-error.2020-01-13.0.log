@@ -1,0 +1,64 @@
+2020-01-13 17:31:05.096 [main] ERROR o.s.boot.web.embedded.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'com.wbspool.fastboot.core.web.configuration.FastbootUrlConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'authInterceptor'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authInterceptor': Unsatisfied dependency expressed through field 'umsAdminService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsAdminService': Unsatisfied dependency expressed through field 'umsAdminDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'umsAdminDao': Cannot create inner bean '(inner bean)#67292fc7' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#67292fc7': Cannot resolve reference to bean 'hapMonitorCoreServiceEntityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'hapMonitorCoreServiceEntityManagerFactory' available
+2020-01-13 17:31:05.384 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field umsAdminDao in com.kuyuntech.hapmonitor.coreservice.service.core.impl.UmsAdminServiceImpl required a bean named 'hapMonitorCoreServiceEntityManagerFactory' that could not be found.
+
+
+Action:
+
+Consider defining a bean named 'hapMonitorCoreServiceEntityManagerFactory' in your configuration.
+
+2020-01-13 17:34:11.053 [main] ERROR o.s.boot.web.embedded.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'com.wbspool.fastboot.core.web.configuration.FastbootUrlConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'authInterceptor'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authInterceptor': Unsatisfied dependency expressed through field 'umsAdminService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsAdminService': Unsatisfied dependency expressed through field 'umsAdminDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'umsAdminDao': Cannot create inner bean '(inner bean)#e5c52fa' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#e5c52fa': Cannot resolve reference to bean 'hapMonitorCoreServiceEntityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'hapMonitorCoreServiceEntityManagerFactory' available
+2020-01-13 17:34:11.242 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field umsAdminDao in com.kuyuntech.hapmonitor.coreservice.service.core.impl.UmsAdminServiceImpl required a bean named 'hapMonitorCoreServiceEntityManagerFactory' that could not be found.
+
+
+Action:
+
+Consider defining a bean named 'hapMonitorCoreServiceEntityManagerFactory' in your configuration.
+
+2020-01-13 17:35:27.790 [main] ERROR o.s.boot.web.embedded.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'com.wbspool.fastboot.core.web.configuration.FastbootUrlConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'authInterceptor'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authInterceptor': Unsatisfied dependency expressed through field 'umsAdminService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsAdminService': Unsatisfied dependency expressed through field 'umsAdminDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'umsAdminDao': Cannot create inner bean '(inner bean)#4a14f7d7' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#4a14f7d7': Cannot resolve reference to bean 'hapMonitorCoreServiceEntityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'hapMonitorCoreServiceEntityManagerFactory' available
+2020-01-13 17:35:27.988 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field umsAdminDao in com.kuyuntech.hapmonitor.coreservice.service.core.impl.UmsAdminServiceImpl required a bean named 'hapMonitorCoreServiceEntityManagerFactory' that could not be found.
+
+
+Action:
+
+Consider defining a bean named 'hapMonitorCoreServiceEntityManagerFactory' in your configuration.
+
+2020-01-13 17:37:48.463 [main] ERROR o.s.boot.web.embedded.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'com.wbspool.fastboot.core.web.configuration.FastbootUrlConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'authInterceptor'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authInterceptor': Unsatisfied dependency expressed through field 'umsAdminService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsAdminService': Unsatisfied dependency expressed through field 'umsAdminDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'umsAdminDao': Cannot create inner bean '(inner bean)#1f4cb17b' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#1f4cb17b': Cannot resolve reference to bean 'hapMonitorCoreServiceEntityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'hapMonitorCoreServiceEntityManagerFactory' available
+2020-01-13 17:37:48.677 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field umsAdminDao in com.kuyuntech.hapmonitor.coreservice.service.core.impl.UmsAdminServiceImpl required a bean named 'hapMonitorCoreServiceEntityManagerFactory' that could not be found.
+
+
+Action:
+
+Consider defining a bean named 'hapMonitorCoreServiceEntityManagerFactory' in your configuration.
+

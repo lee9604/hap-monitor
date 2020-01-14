@@ -3,6 +3,9 @@ package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsAdminService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsAdminDao;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
@@ -31,11 +34,15 @@ import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
 /**
  * UmsAdminService
  */
+@ConfigurationProperties(prefix = "md5")
 @Service("umsAdminService")
 @Transactional(rollbackFor = Exception.class, transactionManager = "hapMonitorCoreServiceTransactionManager")
 public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAdminBean> implements UmsAdminService {
 
     private static final Logger logger = LoggerFactory.getLogger(UmsAdminServiceImpl.class);
+
+    @Value("${md5.salt}")
+    private String SALT;
 
     @Autowired
     UmsAdminDao umsAdminDao;
@@ -205,7 +212,8 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
             return null;
         }
 
-        UmsAdmin umsAdmin = umsAdminDao.findByUsernameAndPassword(umsAdminBean.getUsername(), umsAdminBean.getPassword());
+        UmsAdmin umsAdmin = umsAdminDao.findByUsernameAndPassword(umsAdminBean.getUsername(),
+                DigestUtils.md5Hex(umsAdminBean.getPassword() + SALT));
 
         if (null == umsAdmin) {
             return null;

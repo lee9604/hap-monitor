@@ -1,6 +1,7 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsGroupBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
 
@@ -92,6 +93,8 @@ public interface DmsGroupService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
+    PagerBean<DmsGroupBean> findPager(DmsGroupBean dmsGroupBean, PagerBean pagerBean, UmsUserBean umsUserBean);
+
+    List<DmsGroupBean> findAll(DmsGroupBean dmsGroupBean, PagerBean pagerBean, UmsUserBean umsUserBean);
 }

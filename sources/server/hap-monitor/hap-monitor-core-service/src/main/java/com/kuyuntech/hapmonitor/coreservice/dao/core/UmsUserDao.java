@@ -16,9 +16,7 @@ public interface UmsUserDao extends FastbootRepository<UmsUser,Long> {
 
    
    UmsUser findByCodeAndValid(String code,Short valid);
-   
-
-   
 
 
+    UmsUser findByUsernameAndPassword(String username, String password);
 }

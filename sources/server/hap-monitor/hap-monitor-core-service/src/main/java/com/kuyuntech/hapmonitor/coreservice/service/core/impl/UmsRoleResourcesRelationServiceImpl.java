@@ -201,7 +201,19 @@ public class UmsRoleResourcesRelationServiceImpl extends AbstractFastbootService
 
     }
 
-    
+    @Override
+    public List<UmsRoleResourcesRelationBean> findUmsRoleResourcesRelationsByRoleId(Long roleId) {
+        List<UmsRoleResourcesRelation> umsRoleResourcesRelationList = umsRoleResourcesRelationDao.findUmsRoleResourcesRelationsByRoleId(roleId);
+
+        List<UmsRoleResourcesRelationBean> umsRoleResourcesRelationBeanList = new ArrayList<>();
+
+        for (UmsRoleResourcesRelation umsRoleResourcesRelation : umsRoleResourcesRelationList) {
+            UmsRoleResourcesRelationBean umsRoleResourcesRelationBean = new UmsRoleResourcesRelationBean();
+            BeanUtils.copyProperties(umsRoleResourcesRelation, umsRoleResourcesRelationBean);
+            umsRoleResourcesRelationBeanList.add(umsRoleResourcesRelationBean);
+        }
+        return umsRoleResourcesRelationBeanList;
+    }
 
 
 }

@@ -201,7 +201,21 @@ public class UmsResourcesServiceImpl extends AbstractFastbootService<UmsResource
 
     }
 
-    
+    @Override
+    public List<UmsResourcesBean> findUmsResourcesByIdIn(List<Long> resourcesIdList) {
+
+        List<UmsResources> umsResourcesList = umsResourcesDao.findUmsResourcesByIdIn(resourcesIdList);
+
+        List<UmsResourcesBean> umsResourcesBeanList = new ArrayList<>();
+
+        for (UmsResources umsResources : umsResourcesList) {
+            UmsResourcesBean umsResourcesBean = new UmsResourcesBean();
+            BeanUtils.copyProperties(umsResources, umsResourcesBean);
+            umsResourcesBeanList.add(umsResourcesBean);
+        }
+
+        return umsResourcesBeanList;
+    }
 
 
 }

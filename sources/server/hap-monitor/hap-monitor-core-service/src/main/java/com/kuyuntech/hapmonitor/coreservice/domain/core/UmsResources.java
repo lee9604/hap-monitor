@@ -15,5 +15,5 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class UmsResources extends FastbootEntity {
     private String url;
-    private String desc;
+    private String info;
 }

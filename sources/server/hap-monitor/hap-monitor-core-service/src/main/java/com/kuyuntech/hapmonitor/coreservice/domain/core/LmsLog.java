@@ -17,7 +17,7 @@ public class LmsLog extends FastbootEntity {
     // 操作者
     private String operator;
     // 描述信息
-    private String desc;
+    private String info;
     // 被操作对象
     private String target;
 }

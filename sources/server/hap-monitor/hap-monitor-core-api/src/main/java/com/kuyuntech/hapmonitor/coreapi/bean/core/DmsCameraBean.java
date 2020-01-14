@@ -46,6 +46,9 @@ public class DmsCameraBean  implements Serializable {
 
     private Date updateTime ;
 
+    // 分组名
+    private String groupName;
+
 
 
 }

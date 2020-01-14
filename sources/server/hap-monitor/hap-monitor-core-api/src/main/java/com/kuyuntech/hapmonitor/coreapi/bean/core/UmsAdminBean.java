@@ -27,10 +27,10 @@ public class UmsAdminBean  implements Serializable {
 
     private Long roleId ;
 
-    @NotBlank(groups = ValidGroup.Detail.class, message = "用户名不能为空")
+    @NotBlank(groups = {ValidGroup.Detail.class, ValidGroup.Add.class, ValidGroup.Update.class}, message = "用户名不能为空")
     private String username ;
 
-    @NotBlank(groups = ValidGroup.Detail.class, message = "密码不能为空")
+    @NotBlank(groups = {ValidGroup.Detail.class, ValidGroup.Add.class, ValidGroup.Update.class}, message = "密码不能为空")
     private String password ;
 
     private Long id ;

@@ -1,7 +1,10 @@
 package com.kuyuntech.hapmonitor.platform.controller.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsGroupBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsGroupService;
+import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
+import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import com.wbspool.fastboot.core.common.bean.ResponseBean;
 import com.wbspool.fastboot.core.common.builder.MapBuilder;
@@ -16,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +37,8 @@ public class DmsGroupController {
     @Autowired
     DmsGroupService dmsGroupService;
 
-    
+    @Autowired
+    UmsUserService umsUserService;
 
     /**
     * 新增
@@ -107,9 +112,12 @@ public class DmsGroupController {
     * @return
     */
     @RequestMapping
-    public Object list(DmsGroupBean dmsGroupBean, PagerBean pagerBean){
+    public Object list(DmsGroupBean dmsGroupBean, PagerBean pagerBean, HttpServletRequest request){
 
-        PagerBean<DmsGroupBean> dmsGroupBeanPagerBean = this.dmsGroupService.findPager(dmsGroupBean,pagerBean);
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        PagerBean<DmsGroupBean> dmsGroupBeanPagerBean = this.dmsGroupService.findPager(dmsGroupBean,pagerBean, umsUserBean);
 
         List<Map> dmsGroupMapList = new ArrayList<>();
 
@@ -119,7 +127,7 @@ public class DmsGroupController {
                                             .put("quantity",e.getQuantity())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
-                                            .put("updateTime",e.getUpdateTime())
+                                            .put("cameraList",e.getDmsCameraSimpleBeanList())
                                             .build();
                     dmsGroupMapList.add(dmsGroupMap);
              });

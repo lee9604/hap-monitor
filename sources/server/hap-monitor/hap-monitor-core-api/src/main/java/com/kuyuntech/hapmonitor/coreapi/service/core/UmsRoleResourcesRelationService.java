@@ -92,6 +92,6 @@ public interface UmsRoleResourcesRelationService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
+    List<UmsRoleResourcesRelationBean> findUmsRoleResourcesRelationsByRoleId(Long roleId);
 }

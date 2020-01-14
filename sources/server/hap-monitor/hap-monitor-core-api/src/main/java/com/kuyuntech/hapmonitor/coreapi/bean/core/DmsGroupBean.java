@@ -11,6 +11,7 @@ import java.lang.Short;
 import java.util.Date;
 import java.lang.String;
 import java.lang.Integer;
+import java.util.List;
 
 /**
 * DmsGroupBean
@@ -39,6 +40,7 @@ public class DmsGroupBean  implements Serializable {
 
     private Date updateTime ;
 
+    private List<DmsCameraSimpleBean> dmsCameraSimpleBeanList;
 
 
 }

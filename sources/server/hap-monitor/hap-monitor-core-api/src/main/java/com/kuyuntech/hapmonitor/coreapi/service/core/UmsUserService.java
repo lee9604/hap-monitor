@@ -1,5 +1,6 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
@@ -92,6 +93,10 @@ public interface UmsUserService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
+    PagerBean<UmsUserBean> findPagerForUmsAdmin(UmsUserBean umsUserBean, PagerBean pagerBean);
+
+    void checkPassword(String password);
+
+    UmsUserBean findByUmsAdminBean(UmsUserBean umsUserBean);
 }
