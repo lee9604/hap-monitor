@@ -9,6 +9,7 @@ import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsGroup;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -273,6 +274,7 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
         List<UmsUserBean> umsUserBeans = new ArrayList<>();
 //        // 根据条件进行查询
         detachedCriteria.add(Restrictions.eq("roleId", 1L));
+        detachedCriteria.addOrder(Order.desc("createTime"));
         if (null != umsUserBean) {
             if (!StringUtils.isBlank(umsUserBean.getUsername())) {
                 detachedCriteria.add(Restrictions.eq("username", umsUserBean.getUsername()));
