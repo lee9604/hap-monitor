@@ -3,6 +3,7 @@ package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsCameraService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsCameraDao;
+import org.hibernate.criterion.MatchMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
@@ -108,10 +109,7 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera,DmsC
             return null ;
         }
 
-        
         DmsCamera dmsCamera = dmsCameraDao.findByCodeAndValid(dmsCameraBean.getCode(),VALID);
-        
-
 
         if(dmsCamera == null){
             return null ;
@@ -129,6 +127,11 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera,DmsC
     public List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean, PagerBean pagerBean) {
         List<DmsCameraBean> dmsCameraBeans = new ArrayList<>();
         DetachedCriteria detachedCriteria = createListCriteria(dmsCameraBean);
+
+        if (!StringUtils.isBlank(dmsCameraBean.getName())) {
+            detachedCriteria.add(Restrictions.like("name", dmsCameraBean.getName(), MatchMode.ANYWHERE));
+        }
+
         List<DmsCamera> dmsCameras = dmsCameraDao.findAll(detachedCriteria,pagerBean);
         for (DmsCamera dmsCamera : dmsCameras) {
             DmsCameraBean dmsCameraBeanTemp = new DmsCameraBean();
