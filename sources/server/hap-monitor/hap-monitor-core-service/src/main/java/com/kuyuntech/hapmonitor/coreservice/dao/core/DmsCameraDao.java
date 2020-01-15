@@ -19,6 +19,8 @@ public interface DmsCameraDao extends FastbootRepository<DmsCamera,Long> {
    
    List<DmsCamera> findDmsCamerasByGroupId(Long groupId);
    
+   Integer countByGroupIdIn(List<Long> ids);
 
+   Integer countByGroupIdInAndState(List<Long> ids, Short state);
 
 }

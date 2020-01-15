@@ -24,7 +24,7 @@ public class UmsResourcesBean  implements Serializable {
 
     private String url ;
 
-    private String desc ;
+    private String info ;
 
     private Long id ;
 

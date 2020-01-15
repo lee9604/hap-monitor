@@ -1,8 +1,13 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsAlarmService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsAlarmDao;
+import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsAlarmBean;
@@ -13,11 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import java.util.ArrayList;
-import org.hibernate.criterion.Order;
+
 import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
 import org.springframework.util.Assert;
 import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
@@ -39,6 +43,8 @@ public class DmsAlarmServiceImpl extends AbstractFastbootService<DmsAlarm,DmsAla
     @Autowired
     DmsAlarmDao dmsAlarmDao;
 
+    @Autowired
+    UmsUserGroupRelationDao umsUserGroupRelationDao;
     
 
     @Override
@@ -126,9 +132,37 @@ public class DmsAlarmServiceImpl extends AbstractFastbootService<DmsAlarm,DmsAla
     }
 
     @Override
-    public List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean) {
+    public List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean, UmsUserBean umsUserBean) {
+
+        // 获取当前用户的所有分组
+        List<UmsUserGroupRelation> umsUserGroupRelationList = umsUserGroupRelationDao.findUmsUserGroupRelationsByUserId(umsUserBean.getId());
+        List<Long> dmsGroupIdList = new ArrayList<>();
+        for (UmsUserGroupRelation umsUserGroupRelation : umsUserGroupRelationList) {
+            dmsGroupIdList.add(umsUserGroupRelation.getGroupId());
+        }
+
         List<DmsAlarmBean> dmsAlarmBeans = new ArrayList<>();
         DetachedCriteria detachedCriteria = createListCriteria(dmsAlarmBean);
+
+        // 按照发生时间倒序排序
+        detachedCriteria.addOrder(Order.desc("createTime"));
+
+        // 设置查询条件为用户所有分组的警报
+        detachedCriteria.add(Restrictions.in("groupId", dmsGroupIdList));
+
+        if (null != dmsAlarmBean.getGroupId()) {
+            detachedCriteria.add(Restrictions.eq("groupId", dmsAlarmBean.getGroupId()));
+        }
+        if (!StringUtils.isBlank(dmsAlarmBean.getCameraName())) {
+            detachedCriteria.add(Restrictions.eq("cameraName", dmsAlarmBean.getCameraName()));
+        }
+        if (!StringUtils.isBlank(dmsAlarmBean.getCameraNum())) {
+            detachedCriteria.add(Restrictions.eq("cameraNum", dmsAlarmBean.getCameraNum()));
+        }
+        if (!(StringUtils.isBlank(dmsAlarmBean.getStartTime()+"")&&StringUtils.isBlank(dmsAlarmBean.getEndTime()+""))) {
+            detachedCriteria.add(Restrictions.between("createTime", dmsAlarmBean.getStartTime(), dmsAlarmBean.getEndTime()));
+        }
+
         List<DmsAlarm> dmsAlarms = dmsAlarmDao.findAll(detachedCriteria,pagerBean);
         for (DmsAlarm dmsAlarm : dmsAlarms) {
             DmsAlarmBean dmsAlarmBeanTemp = new DmsAlarmBean();
@@ -139,8 +173,8 @@ public class DmsAlarmServiceImpl extends AbstractFastbootService<DmsAlarm,DmsAla
     }
 
     @Override
-    public List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean) {
-       return  this.findAll(dmsAlarmBean,null);
+    public List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean, UmsUserBean umsUserBean) {
+       return  this.findAll(dmsAlarmBean,null, umsUserBean);
     }
 
     @Override
@@ -150,8 +184,8 @@ public class DmsAlarmServiceImpl extends AbstractFastbootService<DmsAlarm,DmsAla
     }
 
      @Override
-     public PagerBean<DmsAlarmBean> findPager(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean) {
-        List<DmsAlarmBean> dmsAlarmBeans = this.findAll(dmsAlarmBean, pagerBean);
+     public PagerBean<DmsAlarmBean> findPager(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean, UmsUserBean umsUserBean) {
+        List<DmsAlarmBean> dmsAlarmBeans = this.findAll(dmsAlarmBean, pagerBean, umsUserBean);
         Long count = this.countAll(dmsAlarmBean);
         PagerBean<DmsAlarmBean> dmsAlarmPageBean = new PagerBean<>();
         BeanUtils.copyProperties(pagerBean, dmsAlarmPageBean);
@@ -200,8 +234,6 @@ public class DmsAlarmServiceImpl extends AbstractFastbootService<DmsAlarm,DmsAla
         }
 
     }
-
-    
 
 
 }

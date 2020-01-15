@@ -1,6 +1,7 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsAlarmBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
 
@@ -51,9 +52,10 @@ public interface DmsAlarmService  {
      * 分页查找多条记录
      * @param dmsAlarmBean 查找参数
      * @param pagerBean  分页参数
+     * @param umsUserBean
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean);
+     List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean, UmsUserBean umsUserBean);
 
 
 
@@ -62,7 +64,7 @@ public interface DmsAlarmService  {
      * @param dmsAlarmBean 查找参数
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean);
+     List<DmsAlarmBean> findAll(DmsAlarmBean dmsAlarmBean,UmsUserBean umsUserBean);
 
 
     /**
@@ -76,9 +78,10 @@ public interface DmsAlarmService  {
      * 分页查找多条记录
      * @param dmsAlarmBean 查询条件参数
      * @param pagerBean 分页参数
+     * @param umsUserBean
      * @return 返回查询结果的Pager封装
      */
-     PagerBean<DmsAlarmBean> findPager(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean);
+     PagerBean<DmsAlarmBean> findPager(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean, UmsUserBean umsUserBean);
 
     /**
      * 批量删除
@@ -92,6 +95,5 @@ public interface DmsAlarmService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
 }

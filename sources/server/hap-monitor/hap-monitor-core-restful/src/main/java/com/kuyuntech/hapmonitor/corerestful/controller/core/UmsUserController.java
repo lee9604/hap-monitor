@@ -110,7 +110,7 @@ public class UmsUserController {
     @RequestMapping
     public Object list(UmsUserBean umsUserBean, PagerBean pagerBean){
 
-        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean,pagerBean);
+        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean,pagerBean, LoginUmsUserBean);
 
         List<Map> umsUserMapList = new ArrayList<>();
 

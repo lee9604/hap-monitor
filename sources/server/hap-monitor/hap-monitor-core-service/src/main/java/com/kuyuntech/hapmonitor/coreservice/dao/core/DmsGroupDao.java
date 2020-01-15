@@ -17,8 +17,8 @@ public interface DmsGroupDao extends FastbootRepository<DmsGroup,Long> {
    
    DmsGroup findByCodeAndValid(String code,Short valid);
    
-   DmsGroup findDmsGroupsById(Long id);
-   
+   DmsGroup findDmsGroupById(Long id);
 
+   List<DmsGroup> findDmsGroupsByIdIn(List<Long> ids);
 
 }

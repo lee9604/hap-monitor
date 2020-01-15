@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,6 +17,8 @@ import javax.persistence.Entity;
 public class LmsLog extends FastbootEntity {
     // 操作者
     private String operator;
+    // 操作时间
+    private Date operationTime;
     // 描述信息
     private String info;
     // 被操作对象

@@ -110,7 +110,7 @@ public class DmsCameraController {
     @RequestMapping
     public Object list(DmsCameraBean dmsCameraBean, PagerBean pagerBean){
 
-        PagerBean<DmsCameraBean> dmsCameraBeanPagerBean = this.dmsCameraService.findPager(dmsCameraBean,pagerBean);
+        PagerBean<DmsCameraBean> dmsCameraBeanPagerBean = this.dmsCameraService.findPager(dmsCameraBean,pagerBean, umsUserBean);
 
         List<Map> dmsCameraMapList = new ArrayList<>();
 

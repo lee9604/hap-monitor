@@ -1,21 +1,28 @@
 package com.kuyuntech.hapmonitor.platform.controller.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsCameraService;
+import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import com.wbspool.fastboot.core.common.bean.ResponseBean;
 import com.wbspool.fastboot.core.common.builder.MapBuilder;
 import com.wbspool.fastboot.core.common.constant.ValidGroup;
 import com.wbspool.fastboot.core.web.annotation.ParamErrorAutoResponse;
 import com.wbspool.fastboot.core.web.result.ParamErrorResultBuilder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +32,20 @@ import java.util.Map;
 * DmsCameraController
 *
 */
+@ConfigurationProperties(prefix = "md5")
 @RestController
 public class DmsCameraController {
 
     private static final Logger logger = LoggerFactory.getLogger(DmsCameraController.class);
 
+    @Value("${md5.salt}")
+    private String SALT;
+
     @Autowired
     DmsCameraService dmsCameraService;
 
+    @Autowired
+    UmsUserService umsUserService;
     
 
     /**
@@ -44,7 +57,7 @@ public class DmsCameraController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object add(@Validated(ValidGroup.Add.class) DmsCameraBean dmsCameraBean){
+    public Object add(@Validated(ValidGroup.Add.class) DmsCameraBean dmsCameraBean, BindingResult result){
 
          dmsCameraBean = this.dmsCameraService.add(dmsCameraBean);
 
@@ -65,7 +78,7 @@ public class DmsCameraController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object update(@Validated(ValidGroup.Update.class) DmsCameraBean dmsCameraBean){
+    public Object update(@Validated(ValidGroup.Update.class) DmsCameraBean dmsCameraBean, BindingResult result){
 
        dmsCameraBean = this.dmsCameraService.update(dmsCameraBean);
 
@@ -87,7 +100,15 @@ public class DmsCameraController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object delete(@Validated(ValidGroup.Delete.class) DmsCameraBean dmsCameraBean){
+    public Object delete(@Validated(ValidGroup.Delete.class) DmsCameraBean dmsCameraBean, String password,
+                         HttpServletRequest request){
+
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        if (!umsUserBean.getPassword().equals(DigestUtils.md5Hex(password + SALT))) {
+            return ResponseBean.unAuthorize("密码错误！");
+        }
 
          dmsCameraBean = this.dmsCameraService.delete(dmsCameraBean);
 
@@ -107,9 +128,12 @@ public class DmsCameraController {
     * @return
     */
     @RequestMapping
-    public Object list(DmsCameraBean dmsCameraBean, PagerBean pagerBean){
+    public Object list(DmsCameraBean dmsCameraBean, PagerBean pagerBean, HttpServletRequest request){
 
-        PagerBean<DmsCameraBean> dmsCameraBeanPagerBean = this.dmsCameraService.findPager(dmsCameraBean,pagerBean);
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        PagerBean<DmsCameraBean> dmsCameraBeanPagerBean = this.dmsCameraService.findPager(dmsCameraBean,pagerBean, umsUserBean);
 
         List<Map> dmsCameraMapList = new ArrayList<>();
 
@@ -123,7 +147,6 @@ public class DmsCameraController {
                                             .put("state",e.getState())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
-                                            .put("updateTime",e.getUpdateTime())
                                             .build();
                     dmsCameraMapList.add(dmsCameraMap);
              });
@@ -191,4 +214,13 @@ public class DmsCameraController {
 
     
 
+
+    @RequestMapping
+    public Object getCameraInfo(HttpServletRequest request) {
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+        Map<String, Object> map = dmsCameraService.findCameraInfo(umsUserBean);
+
+        return ResponseBean.success("操作成功").addData("dmsCameraNum", map);
+    }
 }

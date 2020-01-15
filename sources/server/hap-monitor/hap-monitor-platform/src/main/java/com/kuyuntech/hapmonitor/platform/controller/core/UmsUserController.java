@@ -2,6 +2,7 @@ package com.kuyuntech.hapmonitor.platform.controller.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
+import com.kuyuntech.hapmonitor.coreapi.constant.core.CustomValidGroup;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import com.wbspool.fastboot.core.common.bean.ResponseBean;
@@ -33,10 +34,14 @@ import java.util.Map;
 /**
  * UmsUserController
  */
+@ConfigurationProperties(prefix = "md5")
 @RestController
 public class UmsUserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UmsUserController.class);
+
+    @Value("${md5.salt}")
+    private String SALT;
 
     @Autowired
     UmsUserService umsUserService;
@@ -96,7 +101,16 @@ public class UmsUserController {
      */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object delete(@Validated(ValidGroup.Delete.class) UmsUserBean umsUserBean) {
+    public Object delete(@Validated(ValidGroup.Delete.class) UmsUserBean umsUserBean, String password,
+                         HttpServletRequest request) {
+
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean LoginUmsUserBean = umsUserService.find(code);
+
+        if (!LoginUmsUserBean.getPassword().equals(DigestUtils.md5Hex(password + SALT))) {
+            return ResponseBean.unAuthorize("密码错误");
+        }
+
 
         umsUserBean = this.umsUserService.delete(umsUserBean);
 
@@ -117,9 +131,12 @@ public class UmsUserController {
      * @return
      */
     @RequestMapping
-    public Object list(UmsUserBean umsUserBean, PagerBean pagerBean) {
+    public Object list(UmsUserBean umsUserBean, PagerBean pagerBean, HttpServletRequest request) {
 
-        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean, pagerBean);
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean LoginUmsUserBean = umsUserService.find(code);
+
+        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean, pagerBean, LoginUmsUserBean);
 
         List<Map> umsUserMapList = new ArrayList<>();
 
@@ -230,6 +247,38 @@ public class UmsUserController {
         HttpSession session = request.getSession();
         session.invalidate();
         return ResponseBean.success("注销成功");
+    }
+
+    @RequestMapping
+    @ParamErrorAutoResponse
+    public Object updateLevelOneUser(@Validated(CustomValidGroup.UpdateLevelOne.class) UmsUserBean umsUserBean,
+                                     BindingResult result) {
+
+        umsUserBean = this.umsUserService.updateLevelOneUser(umsUserBean);
+
+
+        if (umsUserBean == null) {
+            return ResponseBean.serverError("操作失败！");
+        }
+
+        return ResponseBean.success("操作成功！").addData("code", umsUserBean.getCode());
+
+    }
+
+    @RequestMapping
+    @ParamErrorAutoResponse
+    public Object updateLevelTwoUser(@Validated(CustomValidGroup.UpdateLevelOne.class) UmsUserBean umsUserBean,
+                                     BindingResult result) {
+
+        umsUserBean = this.umsUserService.updateLevelTwoUser(umsUserBean);
+
+
+        if (umsUserBean == null) {
+            return ResponseBean.serverError("操作失败！");
+        }
+
+        return ResponseBean.success("操作成功！").addData("code", umsUserBean.getCode());
+
     }
 
 }

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/hap-monitor.iml" filepath="$PROJECT_DIR$/hap-monitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hap-monitor.iml" filepath="$PROJECT_DIR$/hap-monitor.iml" />
       <module fileurl="file://$PROJECT_DIR$/hap-monitor-core-api/hap-monitor-core-api.iml" filepath="$PROJECT_DIR$/hap-monitor-core-api/hap-monitor-core-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/hap-monitor-core-restful/hap-monitor-core-restful.iml" filepath="$PROJECT_DIR$/hap-monitor-core-restful/hap-monitor-core-restful.iml" />
       <module fileurl="file://$PROJECT_DIR$/hap-monitor-core-service/hap-monitor-core-service.iml" filepath="$PROJECT_DIR$/hap-monitor-core-service/hap-monitor-core-service.iml" />

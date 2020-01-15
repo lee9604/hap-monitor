@@ -14,6 +14,7 @@ import com.wbspool.fastboot.core.web.result.ParamErrorResultBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,13 @@ public class DmsGroupController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object add(@Validated(ValidGroup.Add.class) DmsGroupBean dmsGroupBean){
+    public Object add(@Validated(ValidGroup.Add.class) DmsGroupBean dmsGroupBean, BindingResult result,
+                      HttpServletRequest request){
 
-         dmsGroupBean = this.dmsGroupService.add(dmsGroupBean);
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+         dmsGroupBean = this.dmsGroupService.add(dmsGroupBean, umsUserBean);
 
 
          if (dmsGroupBean == null) {
@@ -188,7 +193,5 @@ public class DmsGroupController {
 
         return ResponseBean.success("操作成功！");
     }
-
-    
 
 }

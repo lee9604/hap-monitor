@@ -1,9 +1,12 @@
 package com.kuyuntech.hapmonitor.coreapi.bean.core;
 
+import com.wbspool.fastboot.core.common.constant.ValidGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
+
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 import java.lang.Long;
@@ -24,6 +27,7 @@ import java.util.List;
 public class DmsGroupBean  implements Serializable {
 
 
+    @NotBlank(groups = {ValidGroup.Add.class}, message = "分组名称不能为空")
     private String name ;
 
     private Integer quantity ;
@@ -40,7 +44,7 @@ public class DmsGroupBean  implements Serializable {
 
     private Date updateTime ;
 
+    // 设备集合
     private List<DmsCameraSimpleBean> dmsCameraSimpleBeanList;
-
 
 }

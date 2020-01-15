@@ -1,11 +1,11 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
-import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraSimpleBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
-import com.kuyuntech.hapmonitor.coreapi.service.core.DmsCameraService;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserGroupRelationBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsGroupService;
+import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserGroupRelationService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsCameraDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsGroupDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -54,12 +53,25 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
     @Autowired
     DmsCameraDao dmsCameraDao;
 
+    @Autowired
+    UmsUserGroupRelationService umsUserGroupRelationService;
+
+
     @Override
-    public DmsGroupBean add(DmsGroupBean dmsGroupBean) {
+    @Transactional
+    public DmsGroupBean add(DmsGroupBean dmsGroupBean, UmsUserBean umsUserBean) {
+
 
         DmsGroup dmsGroup = new DmsGroup();
         beanToDomain(dmsGroupBean, dmsGroup, "id");
-        dmsGroupDao.save(dmsGroup);
+        DmsGroup dmsGroupTemp = dmsGroupDao.save(dmsGroup);
+
+        UmsUserGroupRelationBean umsUserGroupRelationBean = new UmsUserGroupRelationBean();
+        umsUserGroupRelationBean.setUserId(umsUserBean.getId());
+        umsUserGroupRelationBean.setGroupId(dmsGroupTemp.getId());
+
+        umsUserGroupRelationService.add(umsUserGroupRelationBean);
+
         domainToBean(dmsGroup, dmsGroupBean);
         return dmsGroupBean;
 
@@ -252,6 +264,7 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
     public List<DmsGroupBean> findAll(DmsGroupBean dmsGroupBean, PagerBean pagerBean, UmsUserBean umsUserBean) {
         List<DmsGroupBean> dmsGroupBeans = new ArrayList<>();
 
+        // 获取当前用户的所有分组
         List<UmsUserGroupRelation> umsUserGroupRelationList = umsUserGroupRelationDao.findUmsUserGroupRelationsByUserId(umsUserBean.getId());
         List<Long> ids = new ArrayList<>();
         for (UmsUserGroupRelation umsUserGroupRelation : umsUserGroupRelationList) {
@@ -260,6 +273,8 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
 
         DetachedCriteria detachedCriteria = createListCriteria(dmsGroupBean);
         detachedCriteria.add(Restrictions.in("id", ids));
+
+        detachedCriteria.addOrder(Order.desc("createTime"));
 
         List<DmsGroup> dmsGroups = dmsGroupDao.findAll(detachedCriteria, pagerBean);
 

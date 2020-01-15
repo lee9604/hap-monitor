@@ -16,9 +16,10 @@ public interface DmsGroupService  {
     /**
      * 新增记录
      * @param dmsGroupBean 新增参数
+     * @param umsUserBean
      * @return 如果成功返回对应bean，否则返回null
      */
-     DmsGroupBean add(DmsGroupBean dmsGroupBean);
+     DmsGroupBean add(DmsGroupBean dmsGroupBean, UmsUserBean umsUserBean);
 
     /**
      * 更新记录

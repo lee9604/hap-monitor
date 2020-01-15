@@ -1,6 +1,5 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
-import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public interface UmsUserService  {
 
-    
+
 
     /**
      * 新增记录
@@ -52,9 +51,10 @@ public interface UmsUserService  {
      * 分页查找多条记录
      * @param umsUserBean 查找参数
      * @param pagerBean  分页参数
+     * @param loginUmsUserBean
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<UmsUserBean> findAll(UmsUserBean umsUserBean, PagerBean pagerBean);
+     List<UmsUserBean> findAll(UmsUserBean umsUserBean, PagerBean pagerBean, UmsUserBean loginUmsUserBean);
 
 
 
@@ -63,7 +63,7 @@ public interface UmsUserService  {
      * @param umsUserBean 查找参数
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<UmsUserBean> findAll(UmsUserBean umsUserBean);
+     List<UmsUserBean> findAll(UmsUserBean umsUserBean, UmsUserBean loginUmsUserBean);
 
 
     /**
@@ -77,9 +77,10 @@ public interface UmsUserService  {
      * 分页查找多条记录
      * @param umsUserBean 查询条件参数
      * @param pagerBean 分页参数
+     * @param loginUmsUserBean
      * @return 返回查询结果的Pager封装
      */
-     PagerBean<UmsUserBean> findPager(UmsUserBean umsUserBean, PagerBean pagerBean);
+     PagerBean<UmsUserBean> findPager(UmsUserBean umsUserBean, PagerBean pagerBean, UmsUserBean loginUmsUserBean);
 
     /**
      * 批量删除
@@ -99,4 +100,8 @@ public interface UmsUserService  {
     void checkPassword(String password);
 
     UmsUserBean findByUmsAdminBean(UmsUserBean umsUserBean);
+
+    UmsUserBean updateLevelOneUser(UmsUserBean umsUserBean);
+
+    UmsUserBean updateLevelTwoUser(UmsUserBean umsUserBean);
 }

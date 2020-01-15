@@ -1,8 +1,10 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DmsCameraService
@@ -51,9 +53,10 @@ public interface DmsCameraService  {
      * 分页查找多条记录
      * @param dmsCameraBean 查找参数
      * @param pagerBean  分页参数
+     * @param umsUserBean
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean, PagerBean pagerBean);
+     List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean, PagerBean pagerBean, UmsUserBean umsUserBean);
 
 
 
@@ -62,7 +65,7 @@ public interface DmsCameraService  {
      * @param dmsCameraBean 查找参数
      * @return 记录存在返回对应的bean集合，否则返回空集合
      */
-     List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean);
+     List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean, UmsUserBean umsUserBean);
 
 
     /**
@@ -76,9 +79,10 @@ public interface DmsCameraService  {
      * 分页查找多条记录
      * @param dmsCameraBean 查询条件参数
      * @param pagerBean 分页参数
+     * @param umsUserBean
      * @return 返回查询结果的Pager封装
      */
-     PagerBean<DmsCameraBean> findPager(DmsCameraBean dmsCameraBean, PagerBean pagerBean);
+     PagerBean<DmsCameraBean> findPager(DmsCameraBean dmsCameraBean, PagerBean pagerBean, UmsUserBean umsUserBean);
 
     /**
      * 批量删除
@@ -92,6 +96,6 @@ public interface DmsCameraService  {
      */
     void batchDeleteByCodes(List<String> codes);
 
-    
 
+    Map<String, Object> findCameraInfo(UmsUserBean umsUserBean);
 }

@@ -24,7 +24,7 @@ public class LmsLogBean  implements Serializable {
 
     private String operator ;
 
-    private String desc ;
+    private String info ;
 
     private String target ;
 

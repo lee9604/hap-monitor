@@ -1,7 +1,6 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
-import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsGroupDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
@@ -94,6 +93,7 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
     }
 
     @Override
+    @Transactional
     public UmsUserBean delete(UmsUserBean umsUserBean) {
 
         if (umsUserBean == null) {
@@ -107,6 +107,17 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
         if (umsUser == null) {
             return null;
         }
+
+        // 判断删除的用户是否是一级用户，若是则删除一级用户名下的二级用户
+        if (umsUser.getRoleId() == 2) {
+            List<UmsUser> umsUserList = umsUserDao.findUmsUsersByParentId(umsUser.getId());
+            for (UmsUser user : umsUserList) {
+                UmsUserBean umsUserBeanTemp = new UmsUserBean();
+                BeanUtils.copyProperties(user, umsUserBeanTemp);
+                this.delete(umsUserBeanTemp);
+            }
+        }
+
 
 
         umsUser.setValid(INVALID);
@@ -141,9 +152,17 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
     }
 
     @Override
-    public List<UmsUserBean> findAll(UmsUserBean umsUserBean, PagerBean pagerBean) {
+    public List<UmsUserBean> findAll(UmsUserBean umsUserBean, PagerBean pagerBean, UmsUserBean loginUmsUserBean) {
+
         List<UmsUserBean> umsUserBeans = new ArrayList<>();
+
+
+
+        // 设置查询条件为倒序、从属id
         DetachedCriteria detachedCriteria = createListCriteria(umsUserBean);
+        detachedCriteria.addOrder(Order.desc("createTime"));
+        detachedCriteria.add(Restrictions.eq("parentId", loginUmsUserBean.getId()));
+
         List<UmsUser> umsUsers = umsUserDao.findAll(detachedCriteria, pagerBean);
         for (UmsUser umsUser : umsUsers) {
             UmsUserBean umsUserBeanTemp = new UmsUserBean();
@@ -154,8 +173,8 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
     }
 
     @Override
-    public List<UmsUserBean> findAll(UmsUserBean umsUserBean) {
-        return this.findAll(umsUserBean, null);
+    public List<UmsUserBean> findAll(UmsUserBean umsUserBean, UmsUserBean loginUmsUserBean) {
+        return this.findAll(umsUserBean, null, loginUmsUserBean);
     }
 
     @Override
@@ -165,8 +184,8 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
     }
 
     @Override
-    public PagerBean<UmsUserBean> findPager(UmsUserBean umsUserBean, PagerBean pagerBean) {
-        List<UmsUserBean> umsUserBeans = this.findAll(umsUserBean, pagerBean);
+    public PagerBean<UmsUserBean> findPager(UmsUserBean umsUserBean, PagerBean pagerBean, UmsUserBean loginUmsUserBean) {
+        List<UmsUserBean> umsUserBeans = this.findAll(umsUserBean, pagerBean, loginUmsUserBean);
         Long count = this.countAll(umsUserBean);
         PagerBean<UmsUserBean> umsUserPageBean = new PagerBean<>();
         BeanUtils.copyProperties(pagerBean, umsUserPageBean);
@@ -263,6 +282,64 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
         return umsUserBean;
     }
 
+    @Override
+    public UmsUserBean updateLevelOneUser(UmsUserBean umsUserBean) {
+        if (umsUserBean == null) {
+            return null;
+        }
+
+
+        UmsUser umsUser = umsUserDao.findByCodeAndValid(umsUserBean.getCode(), VALID);
+
+
+        if (umsUser == null) {
+            return null;
+        }
+
+        beanToDomain(umsUserBean, umsUser, "id", "code", "version", "createTime", "updateTime", "roleId");
+
+        umsUserDao.save(umsUser);
+
+        domainToBean(umsUser, umsUserBean);
+
+        return umsUserBean;
+    }
+
+    @Override
+    @Transactional
+    public UmsUserBean updateLevelTwoUser(UmsUserBean umsUserBean) {
+        if (umsUserBean == null) {
+            return null;
+        }
+
+
+        UmsUser umsUser = umsUserDao.findByCodeAndValid(umsUserBean.getCode(), VALID);
+
+
+        if (umsUser == null) {
+            return null;
+        }
+
+        beanToDomain(umsUserBean, umsUser, "id", "code", "version", "createTime", "updateTime", "roleId");
+
+        // 删除旧的用户分组映射关系
+        umsUserGroupRelationDao.deleteUmsUserGroupRelationsByUserId(umsUserBean.getId());
+        // 添加新的用户分组映射关系
+        List<DmsGroup> dmsGroupList = dmsGroupDao.findDmsGroupsByIdIn(umsUserBean.getGroupIdList());
+        for (DmsGroup dmsGroup : dmsGroupList) {
+            UmsUserGroupRelation umsUserGroupRelation = new UmsUserGroupRelation();
+            umsUserGroupRelation.setUserId(umsUserBean.getId());
+            umsUserGroupRelation.setGroupId(dmsGroup.getId());
+            umsUserGroupRelationDao.save(umsUserGroupRelation);
+        }
+
+        umsUserDao.save(umsUser);
+
+        domainToBean(umsUser, umsUserBean);
+
+        return umsUserBean;
+    }
+
     /**
      * 根据条件查询一级账户列表
      * @param umsUserBean
@@ -296,7 +373,7 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
             List<DmsGroup> dmsGroupList = new ArrayList<>();
             Integer cameraNum = 0;
             for (UmsUserGroupRelation umsUserGroupRelation : umsUserGroupRelationList) {
-                DmsGroup dmsGroup = dmsGroupDao.findDmsGroupsById(umsUserGroupRelation.getGroupId());
+                DmsGroup dmsGroup = dmsGroupDao.findDmsGroupById(umsUserGroupRelation.getGroupId());
                 cameraNum += dmsGroup.getQuantity();
             }
 

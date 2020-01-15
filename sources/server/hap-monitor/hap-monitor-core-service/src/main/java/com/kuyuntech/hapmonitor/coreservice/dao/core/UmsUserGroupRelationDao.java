@@ -18,5 +18,7 @@ public interface UmsUserGroupRelationDao extends FastbootRepository<UmsUserGroup
    UmsUserGroupRelation findByCodeAndValid(String code,Short valid);
    
    List<UmsUserGroupRelation> findUmsUserGroupRelationsByUserId(Long userId);
+
+   void deleteUmsUserGroupRelationsByUserId(Long userId);
    
 }

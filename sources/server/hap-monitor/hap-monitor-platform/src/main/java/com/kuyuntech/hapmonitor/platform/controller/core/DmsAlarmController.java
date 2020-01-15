@@ -1,21 +1,29 @@
 package com.kuyuntech.hapmonitor.platform.controller.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsAlarmBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsAlarmService;
+import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import com.wbspool.fastboot.core.common.bean.ResponseBean;
 import com.wbspool.fastboot.core.common.builder.MapBuilder;
 import com.wbspool.fastboot.core.common.constant.ValidGroup;
 import com.wbspool.fastboot.core.web.annotation.ParamErrorAutoResponse;
 import com.wbspool.fastboot.core.web.result.ParamErrorResultBuilder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +33,20 @@ import java.util.Map;
 * DmsAlarmController
 *
 */
+@ConfigurationProperties(prefix = "md5")
 @RestController
 public class DmsAlarmController {
 
     private static final Logger logger = LoggerFactory.getLogger(DmsAlarmController.class);
 
+    @Value("${md5.salt}")
+    private String SALT;
+
     @Autowired
     DmsAlarmService dmsAlarmService;
 
-    
+    @Autowired
+    UmsUserService umsUserService;
 
     /**
     * 新增
@@ -87,7 +100,15 @@ public class DmsAlarmController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object delete(@Validated(ValidGroup.Delete.class) DmsAlarmBean dmsAlarmBean){
+    public Object delete(@Validated(ValidGroup.Delete.class) DmsAlarmBean dmsAlarmBean, String password,
+                         HttpServletRequest request){
+
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        if (!umsUserBean.getPassword().equals(DigestUtils.md5Hex(password + SALT))) {
+            return ResponseBean.unAuthorize("密码错误");
+        }
 
          dmsAlarmBean = this.dmsAlarmService.delete(dmsAlarmBean);
 
@@ -107,23 +128,23 @@ public class DmsAlarmController {
     * @return
     */
     @RequestMapping
-    public Object list(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean){
+    public Object list(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean, HttpServletRequest request){
 
-        PagerBean<DmsAlarmBean> dmsAlarmBeanPagerBean = this.dmsAlarmService.findPager(dmsAlarmBean,pagerBean);
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        PagerBean<DmsAlarmBean> dmsAlarmBeanPagerBean = this.dmsAlarmService.findPager(dmsAlarmBean,pagerBean, umsUserBean);
 
         List<Map> dmsAlarmMapList = new ArrayList<>();
 
         dmsAlarmBeanPagerBean.getItems().forEach((e) ->{
              Map dmsAlarmMap = MapBuilder.newBuilder()
-                                            .put("cameraId",e.getCameraId())
-                                            .put("groupId",e.getGroupId())
                                             .put("cameraPosition",e.getCameraPosition())
                                             .put("cameraName",e.getCameraName())
                                             .put("cameraNum",e.getCameraNum())
                                             .put("state",e.getState())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
-                                            .put("updateTime",e.getUpdateTime())
                                             .build();
                     dmsAlarmMapList.add(dmsAlarmMap);
              });
