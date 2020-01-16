@@ -1,44 +1,40 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsGroupDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsGroup;
-import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUser;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.BeanUtils;
+import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
-import java.util.ArrayList;
-
-import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.INVALID;
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.VALID;
 
 
 /**
  * UmsUserService
  */
-@ConfigurationProperties(prefix = "md5")
 @Service("umsUserService")
 @Transactional(rollbackFor = Exception.class, transactionManager = "hapMonitorCoreServiceTransactionManager")
 public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUserBean> implements UmsUserService {
@@ -195,12 +191,6 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
         return umsUserPageBean;
     }
 
-    /**
-     * 创建列表查询条件
-     *
-     * @param umsUserBean 查询参数
-     * @return
-     */
     private static DetachedCriteria createListCriteria(UmsUserBean umsUserBean) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UmsUser.class);
         detachedCriteria.add(Restrictions.eq("valid", VALID));
@@ -235,17 +225,10 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
 
     }
 
-    /**
-     * 超级管理员查询所有的一级用户分页列表
-     * @param umsUserBean
-     * @param pagerBean
-     * @return
-     */
     @Override
-    public PagerBean<UmsUserBean> findPagerForUmsAdmin(UmsUserBean umsUserBean, PagerBean pagerBean) {
-        // 查询所有具备一级账号权限的用户
-        DetachedCriteria detachedCriteria = createListCriteria(umsUserBean);
-        List<UmsUserBean> umsUserBeans = this.findAllWithCondition(umsUserBean, pagerBean, detachedCriteria);
+    public PagerBean<UmsUserBean> findPagerRoleLevelOne(UmsUserBean umsUserBean, PagerBean pagerBean) {
+
+        List<UmsUserBean> umsUserBeans = this.findAllRoleLevelOne(umsUserBean, pagerBean);
 
         Long count = this.countAll(umsUserBean);
 
@@ -340,16 +323,17 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
         return umsUserBean;
     }
 
-    /**
-     * 根据条件查询一级账户列表
-     * @param umsUserBean
-     * @param pagerBean
-     * @param detachedCriteria
-     * @return
-     */
-    public List<UmsUserBean> findAllWithCondition(UmsUserBean umsUserBean, PagerBean pagerBean, DetachedCriteria detachedCriteria) {
-        List<UmsUserBean> umsUserBeans = new ArrayList<>();
-//        // 根据条件进行查询
+    public List<UmsUserBean> findAllRoleLevelOne(UmsUserBean umsUserBean, PagerBean pagerBean) {
+        /*
+        查询条件：
+            roleId 一级管理员
+            createTime 逆序排序
+        筛选条件：
+            username 账号名称
+            company 公司名称
+            valid 账号状态
+         */
+        DetachedCriteria detachedCriteria = createListCriteria(umsUserBean);
         detachedCriteria.add(Restrictions.eq("roleId", 1L));
         detachedCriteria.addOrder(Order.desc("createTime"));
         if (null != umsUserBean) {
@@ -364,13 +348,14 @@ public class UmsUserServiceImpl extends AbstractFastbootService<UmsUser, UmsUser
             }
         }
 
-        List<UmsUser> umsUsers = umsUserDao.findAll(detachedCriteria, pagerBean);
+        List<UmsUser> umsUserList = umsUserDao.findAll(detachedCriteria, pagerBean);
+        List<UmsUserBean> umsUserBeans = new ArrayList<>();
 
-        for (UmsUser umsUser : umsUsers) {
+        for (UmsUser umsUser : umsUserList) {
+
+            // 统计用户管理的所有分组的总设备数
             List<UmsUserGroupRelation> umsUserGroupRelationList =
                     umsUserGroupRelationDao.findUmsUserGroupRelationsByUserId(umsUser.getId());
-
-            List<DmsGroup> dmsGroupList = new ArrayList<>();
             Integer cameraNum = 0;
             for (UmsUserGroupRelation umsUserGroupRelation : umsUserGroupRelationList) {
                 DmsGroup dmsGroup = dmsGroupDao.findDmsGroupById(umsUserGroupRelation.getGroupId());

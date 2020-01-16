@@ -95,7 +95,7 @@ public interface UmsUserService  {
     void batchDeleteByCodes(List<String> codes);
 
 
-    PagerBean<UmsUserBean> findPagerForUmsAdmin(UmsUserBean umsUserBean, PagerBean pagerBean);
+    PagerBean<UmsUserBean> findPagerRoleLevelOne(UmsUserBean umsUserBean, PagerBean pagerBean);
 
     void checkPassword(String password);
 

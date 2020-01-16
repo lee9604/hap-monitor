@@ -28,6 +28,8 @@ public class LmsLogBean  implements Serializable {
 
     private String target ;
 
+    private Date operationTime;
+
     private Long id ;
 
     private Long version ;

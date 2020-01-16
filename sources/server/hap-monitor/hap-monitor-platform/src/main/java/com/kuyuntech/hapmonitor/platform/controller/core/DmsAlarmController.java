@@ -15,15 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +30,6 @@ import java.util.Map;
 * DmsAlarmController
 *
 */
-@ConfigurationProperties(prefix = "md5")
 @RestController
 public class DmsAlarmController {
 

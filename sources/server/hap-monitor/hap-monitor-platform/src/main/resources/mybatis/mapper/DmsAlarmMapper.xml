@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuyuntech.hapmonitor.platform.mapper.core.DmsAlarmMapper">
+  <resultMap id="BaseResultMap" type="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarm">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="valid" jdbcType="SMALLINT" property="valid" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="camera_id" jdbcType="BIGINT" property="cameraId" />
+    <result column="camera_name" jdbcType="VARCHAR" property="cameraName" />
+    <result column="camera_num" jdbcType="VARCHAR" property="cameraNum" />
+    <result column="camera_position" jdbcType="VARCHAR" property="cameraPosition" />
+    <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="state" jdbcType="SMALLINT" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, create_time, update_time, valid, version, camera_id, camera_name, camera_num, 
+    camera_position, group_id, state
+  </sql>
+  <select id="selectByExample" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarmExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dms_alarm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dms_alarm
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dms_alarm
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarmExample">
+    delete from dms_alarm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarm">
+    insert into dms_alarm (id, code, create_time, 
+      update_time, valid, version, 
+      camera_id, camera_name, camera_num, 
+      camera_position, group_id, state
+      )
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=SMALLINT}, #{version,jdbcType=BIGINT}, 
+      #{cameraId,jdbcType=BIGINT}, #{cameraName,jdbcType=VARCHAR}, #{cameraNum,jdbcType=VARCHAR}, 
+      #{cameraPosition,jdbcType=VARCHAR}, #{groupId,jdbcType=BIGINT}, #{state,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarm">
+    insert into dms_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="valid != null">
+        valid,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="cameraId != null">
+        camera_id,
+      </if>
+      <if test="cameraName != null">
+        camera_name,
+      </if>
+      <if test="cameraNum != null">
+        camera_num,
+      </if>
+      <if test="cameraPosition != null">
+        camera_position,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=SMALLINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="cameraId != null">
+        #{cameraId,jdbcType=BIGINT},
+      </if>
+      <if test="cameraName != null">
+        #{cameraName,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraNum != null">
+        #{cameraNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraPosition != null">
+        #{cameraPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarmExample" resultType="java.lang.Long">
+    select count(*) from dms_alarm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dms_alarm
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.valid != null">
+        valid = #{record.valid,jdbcType=SMALLINT},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=BIGINT},
+      </if>
+      <if test="record.cameraId != null">
+        camera_id = #{record.cameraId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cameraName != null">
+        camera_name = #{record.cameraName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cameraNum != null">
+        camera_num = #{record.cameraNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cameraPosition != null">
+        camera_position = #{record.cameraPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null">
+        group_id = #{record.groupId,jdbcType=BIGINT},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dms_alarm
+    set id = #{record.id,jdbcType=BIGINT},
+      code = #{record.code,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      valid = #{record.valid,jdbcType=SMALLINT},
+      version = #{record.version,jdbcType=BIGINT},
+      camera_id = #{record.cameraId,jdbcType=BIGINT},
+      camera_name = #{record.cameraName,jdbcType=VARCHAR},
+      camera_num = #{record.cameraNum,jdbcType=VARCHAR},
+      camera_position = #{record.cameraPosition,jdbcType=VARCHAR},
+      group_id = #{record.groupId,jdbcType=BIGINT},
+      state = #{record.state,jdbcType=SMALLINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarm">
+    update dms_alarm
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=SMALLINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="cameraId != null">
+        camera_id = #{cameraId,jdbcType=BIGINT},
+      </if>
+      <if test="cameraName != null">
+        camera_name = #{cameraName,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraNum != null">
+        camera_num = #{cameraNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraPosition != null">
+        camera_position = #{cameraPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuyuntech.hapmonitor.platform.domain.core.DmsAlarm">
+    update dms_alarm
+    set code = #{code,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      valid = #{valid,jdbcType=SMALLINT},
+      version = #{version,jdbcType=BIGINT},
+      camera_id = #{cameraId,jdbcType=BIGINT},
+      camera_name = #{cameraName,jdbcType=VARCHAR},
+      camera_num = #{cameraNum,jdbcType=VARCHAR},
+      camera_position = #{cameraPosition,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=BIGINT},
+      state = #{state,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

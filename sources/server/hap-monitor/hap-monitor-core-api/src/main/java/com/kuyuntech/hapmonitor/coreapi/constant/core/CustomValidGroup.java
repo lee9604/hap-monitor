@@ -7,4 +7,7 @@ public class CustomValidGroup {
 
     // 更新Level2
     public interface UpdateLevelTow{};
+
+    // 更新UmsUser
+    public interface UpdateUmsUser{};
 }

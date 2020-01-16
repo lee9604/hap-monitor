@@ -11,18 +11,17 @@ import com.wbspool.fastboot.core.common.constant.ValidGroup;
 import com.wbspool.fastboot.core.web.annotation.ParamErrorAutoResponse;
 import com.wbspool.fastboot.core.web.result.ParamErrorResultBuilder;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.Doc;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +34,6 @@ import java.util.Map;
 /**
  * UmsAdminController
  */
-@ConfigurationProperties(prefix = "md5")
 @RestController
 public class UmsAdminController {
 
@@ -52,8 +50,7 @@ public class UmsAdminController {
 
 
     /**
-     * 新增
-     * TODO 待实现
+     * 添加账号
      *
      * @param umsAdminBean 新增参数
      * @return
@@ -74,8 +71,7 @@ public class UmsAdminController {
     }
 
     /**
-     * 更新
-     * TODO 待实现
+     * 更新Admin账号
      *
      * @param umsAdminBean 更新参数
      * @return
@@ -98,14 +94,24 @@ public class UmsAdminController {
 
     /**
      * 删除
-     * TODO 待实现
      *
      * @param umsAdminBean 删除参数
      * @return
      */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object delete(@Validated(ValidGroup.Delete.class) UmsAdminBean umsAdminBean) {
+    public Object delete(@Validated(ValidGroup.Delete.class) UmsAdminBean umsAdminBean, String confirmPassword, HttpServletRequest request) {
+
+        if (StringUtils.isBlank(confirmPassword)) {
+            return ResponseBean.unAuthorize("密码不能为空！");
+        }
+
+        UmsAdminBean AdminBean = umsAdminService.find((String) request.getSession().getAttribute("code"));
+
+        if (!AdminBean.getPassword().equals(DigestUtils.md5Hex(confirmPassword))) {
+            return ResponseBean.unAuthorize("密码错误！");
+        }
+
 
         umsAdminBean = this.umsAdminService.delete(umsAdminBean);
 
@@ -119,8 +125,7 @@ public class UmsAdminController {
 
 
     /**
-     * 查询列表
-     * TODO 待实现
+     * 查询列表，按照逆序排序
      *
      * @param umsAdminBean 查询参数
      * @return
@@ -145,30 +150,6 @@ public class UmsAdminController {
         return ResponseBean.success("操作成功！").addData("umsAdmins", umsAdminMapList).addData("pager", umsAdminBeanPagerBean.simplePager());
 
     }
-
-    @RequestMapping
-    public Object umsUserList(UmsUserBean umsUserBean, PagerBean pagerBean) {
-        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPagerForUmsAdmin(umsUserBean, pagerBean);
-
-        List<Map> umsUserMapList = new ArrayList<>();
-
-        umsUserBeanPagerBean.getItems().forEach((e) -> {
-            Map umsUserMap = MapBuilder.newBuilder()
-                    .put("username", e.getUsername())
-                    .put("name", e.getName())
-                    .put("phone", e.getPhone())
-                    .put("company", e.getCompany())
-                    .put("code", e.getCode())
-                    .put("createTime", e.getCreateTime())
-                    .put("cameraNum", e.getCameraNum())
-                    .build();
-            umsUserMapList.add(umsUserMap);
-        });
-
-
-        return ResponseBean.success("操作成功！").addData("umsUsers", umsUserMapList).addData("pager", umsUserBeanPagerBean.simplePager());
-    }
-
 
     /**
      * 查询详情
@@ -224,6 +205,11 @@ public class UmsAdminController {
     }
 
 
+    /**
+     * Admin登录
+     *
+     * @return
+     */
     @RequestMapping
     @ParamErrorAutoResponse
     public Object login(@Validated(ValidGroup.Detail.class) UmsAdminBean umsAdminBean, BindingResult result,
@@ -247,6 +233,11 @@ public class UmsAdminController {
         return ResponseBean.success("操作成功").addData("code", umsAdminBean.getCode());
     }
 
+    /**
+     * Admin注销
+     *
+     * @return
+     */
     @RequestMapping
     public Object logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -254,17 +245,27 @@ public class UmsAdminController {
         return ResponseBean.success("注销成功");
     }
 
+    /**
+     * 删除UmsUser
+     * TODO 待完成
+     * @return
+     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object deleteUmsUser(@Validated(ValidGroup.Delete.class) UmsUserBean umsUserBean, String password,
-                         HttpServletRequest request) {
+    public Object deleteUmsUser(@Validated(ValidGroup.Delete.class) UmsUserBean umsUserBean, BindingResult result, String password,
+                                HttpServletRequest request) {
+
+        if (StringUtils.isBlank(password)) {
+            return ResponseBean.unAuthorize("密码不能为空！");
+        }
+
         String code = (String) request.getSession().getAttribute("code");
         UmsAdminBean umsAdminBean = umsAdminService.find(code);
         if (!DigestUtils.md5Hex(password + SALT).equals(umsAdminBean.getPassword())) {
-            return ResponseBean.serverError("密码不正确");
+            return ResponseBean.unAuthorize("密码不正确！");
         }
 
-        umsUserBean = this.umsUserService.delete(umsUserBean);
+        umsUserBean = this.umsAdminService.deleteUmsUser(umsUserBean);
 
         if (umsUserBean == null) {
             return ResponseBean.serverError("操作失败！");
@@ -274,11 +275,16 @@ public class UmsAdminController {
 
     }
 
+    /**
+     * 添加客户
+     *
+     * @return
+     */
     @RequestMapping
     @ParamErrorAutoResponse
     public Object addUmsUser(@Validated(ValidGroup.Add.class) UmsUserBean umsUserBean, BindingResult result) {
 
-        umsUserBean = this.umsUserService.add(umsUserBean);
+        umsUserBean = this.umsAdminService.addUmsUser(umsUserBean);
 
 
         if (umsUserBean == null) {
@@ -287,5 +293,55 @@ public class UmsAdminController {
 
         return ResponseBean.success("操作成功！").addData("code", umsUserBean.getCode());
 
+    }
+
+    /**
+     * 更新客户信息
+     *
+     * @return
+     */
+    @RequestMapping
+    @ParamErrorAutoResponse
+    public Object updateUmsUser(@Validated(ValidGroup.Update.class) UmsUserBean umsUserBean, BindingResult result) {
+        umsUserBean = this.umsAdminService.updateUmsUser(umsUserBean);
+
+
+        if (umsUserBean == null) {
+            return ResponseBean.serverError("操作失败！");
+        }
+
+        return ResponseBean.success("操作成功！").addData("code", umsUserBean.getCode());
+    }
+
+    /**
+     * 查询客户列表，按照逆序排序
+     *
+     * @param umsUserBean 查询参数
+     * @param pagerBean   分页参数
+     * @return
+     */
+    @RequestMapping
+    public Object listUmsUsers(UmsUserBean umsUserBean, PagerBean pagerBean) {
+
+        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPagerRoleLevelOne(umsUserBean, pagerBean);
+
+        List<Map> umsUserMapList = new ArrayList<>();
+
+        umsUserBeanPagerBean.getItems().forEach((e) -> {
+            Map umsUserMap = MapBuilder.newBuilder()
+                    .put("username", e.getUsername())
+                    .put("name", e.getName())
+                    .put("phone", e.getPhone())
+                    .put("company", e.getCompany())
+                    .put("code", e.getCode())
+                    .put("createTime", e.getCreateTime())
+                    .put("cameraNum", e.getCameraNum())
+                    .put("valid", e.getValid())
+                    .build();
+            umsUserMapList.add(umsUserMap);
+        });
+
+
+        return ResponseBean.success("操作成功！").addData("umsUsers", umsUserMapList).addData("pager", umsUserBeanPagerBean.simplePager());
     }
 }

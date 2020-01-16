@@ -1,6 +1,7 @@
 package com.kuyuntech.hapmonitor.coreapi.service.core;
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import java.util.List;
 
@@ -94,4 +95,10 @@ public interface UmsAdminService  {
 
 
     UmsAdminBean findByUmsAdminBean(UmsAdminBean umsAdminBean);
+
+    UmsUserBean updateUmsUser(UmsUserBean umsUserBean);
+
+    UmsUserBean addUmsUser(UmsUserBean umsUserBean);
+
+    UmsUserBean deleteUmsUser(UmsUserBean umsUserBean);
 }

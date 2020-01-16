@@ -1,40 +1,39 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsAdminService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsAdminDao;
+import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsAdmin;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUser;
+import com.wbspool.fastboot.core.common.bean.PagerBean;
+import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
-import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsAdmin;
-import com.wbspool.fastboot.core.common.bean.PagerBean;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-
-import java.util.ArrayList;
-
-import org.hibernate.criterion.Order;
-import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
 import org.springframework.util.Assert;
 
-import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.INVALID;
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.VALID;
 
 
 /**
  * UmsAdminService
  */
-@ConfigurationProperties(prefix = "md5")
 @Service("umsAdminService")
 @Transactional(rollbackFor = Exception.class, transactionManager = "hapMonitorCoreServiceTransactionManager")
 public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAdminBean> implements UmsAdminService {
@@ -47,6 +46,8 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
     @Autowired
     UmsAdminDao umsAdminDao;
 
+    @Autowired
+    UmsUserDao umsUserDao;
 
     @Override
     public UmsAdminBean add(UmsAdminBean umsAdminBean) {
@@ -134,6 +135,10 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
     public List<UmsAdminBean> findAll(UmsAdminBean umsAdminBean, PagerBean pagerBean) {
         List<UmsAdminBean> umsAdminBeans = new ArrayList<>();
         DetachedCriteria detachedCriteria = createListCriteria(umsAdminBean);
+
+        // 按照时间逆序排序
+        detachedCriteria.addOrder(Order.desc("createTime"));
+
         List<UmsAdmin> umsAdmins = umsAdminDao.findAll(detachedCriteria, pagerBean);
         for (UmsAdmin umsAdmin : umsAdmins) {
             UmsAdminBean umsAdminBeanTemp = new UmsAdminBean();
@@ -222,6 +227,75 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
         BeanUtils.copyProperties(umsAdmin, umsAdminBean);
 
         return umsAdminBean;
+    }
+
+    @Override
+    public UmsUserBean updateUmsUser(UmsUserBean umsUserBean) {
+        if (umsUserBean == null) {
+            return null;
+        }
+
+
+        UmsUser umsUser = umsUserDao.findByCodeAndValid(umsUserBean.getCode(), VALID);
+
+
+        if (umsUser == null) {
+            return null;
+        }
+
+        BeanUtils.copyProperties(umsUserBean, umsUser, "id", "code", "version", "createTime", "updateTime");
+
+        umsUser = umsUserDao.save(umsUser);
+
+        BeanUtils.copyProperties(umsUser, umsUserBean, "id", "code", "version", "createTime", "updateTime");
+
+        return umsUserBean;
+    }
+
+    @Override
+    public UmsUserBean addUmsUser(UmsUserBean umsUserBean) {
+        UmsUser umsUser = new UmsUser();
+        // 赋予一级管理员权限
+        umsUser.setRoleId(2L);
+
+        BeanUtils.copyProperties(umsUserBean, umsUser, "id");
+
+        umsUser = umsUserDao.save(umsUser);
+
+        BeanUtils.copyProperties(umsUser, umsUserBean);
+
+        return umsUserBean;
+    }
+
+    @Override
+    public UmsUserBean deleteUmsUser(UmsUserBean umsUserBean) {
+        if (umsUserBean == null) {
+            return null;
+        }
+
+        UmsUser umsUser = umsUserDao.findByCodeAndValid(umsUserBean.getCode(), VALID);
+
+        if (umsUser == null) {
+            return null;
+        }
+
+        // 判断删除的用户是否是一级用户，若是则删除一级用户名下的二级用户
+        if (umsUser.getRoleId() == 2) {
+            List<UmsUser> umsUserList = umsUserDao.findUmsUsersByParentId(umsUser.getId());
+            for (UmsUser user : umsUserList) {
+                UmsUserBean umsUserBeanTemp = new UmsUserBean();
+                BeanUtils.copyProperties(user, umsUserBeanTemp);
+                this.delete(umsUserBeanTemp);
+            }
+        }
+
+
+        umsUser.setValid(INVALID);
+        umsUserDao.save(umsUser);
+
+        domainToBean(umsUser, umsUserBean);
+
+        return umsUserBean;
     }
 
 
