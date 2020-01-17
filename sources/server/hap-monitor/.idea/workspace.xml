@@ -1,52 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a9a0341b-4de7-4879-a120-8d0a5ce879cd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_autoconfigure_1_3_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_starter_1_3_2.xml" beforeDir="false" />
+    <list default="true" id="286dee33-7b77-40dd-a553-40a38bee133b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/LmsLogBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/LmsLogBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/DmsGroupBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/DmsGroupBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/UmsUserBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/bean/core/UmsUserBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/constant/core/CustomValidGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/constant/core/CustomValidGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/service/core/UmsAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/service/core/UmsAdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/service/core/UmsUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-api/src/main/java/com/kuyuntech/hapmonitor/coreapi/service/core/UmsUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsAlarmController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsAlarmController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsCameraController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsCameraController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsGroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/DmsGroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/LmsLogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/LmsLogController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/UmsResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/UmsResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/UmsUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-restful/src/main/java/com/kuyuntech/hapmonitor/corerestful/controller/core/UmsUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/domain/core/UmsUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/domain/core/UmsUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsAlarmServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsAlarmServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsCameraServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsCameraServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsGroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsGroupServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/UmsAdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/UmsAdminServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/UmsUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/UmsUserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/configuration/core/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/configuration/core/WebMvcConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsAlarmController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsAlarmController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsCameraController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsCameraController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/LmsLogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/LmsLogController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsAdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsGroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/DmsGroupController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/controller/core/UmsUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/interceptor/core/LogInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/interceptor/core/LogInterceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/hap-monitor-platform-all.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/hap-monitor-platform-all.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/hap-monitor-platform-error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/hap-monitor-platform-error.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/hap-monitor-platform-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/hap-monitor-platform-info.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CodeInsightWorkspaceSettings">
-    <option name="optimizeImportsOnTheFly" value="true" />
-  </component>
   <component name="CompilerWorkspaceConfiguration">
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
-  </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="hap-monitor" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -64,57 +59,37 @@
         <option name="userSettingsFile" value="E:\java\apache-maven-3.6.0\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-        <option name="jdkForImporter" value="1.8" />
-        <option name="vmOptionsForImporter" value="-Xmx768m" />
-      </MavenImportingSettings>
-    </option>
   </component>
-  <component name="MavenRunner">
-    <option name="jreName" value="1.8" />
-  </component>
-  <component name="ProjectId" id="1WOKQRzU7LAprsPGkLGQaAKT117" />
+  <component name="ProjectId" id="1WVCTfrCnuGcdry5LhB1ZxE7Q6i" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\01_idea_workspace\hap-monitor\sources\server\hap-monitor\hap-monitor-platform\src\main\resources" />
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kuyuntech.hapmonitor.platform.controller.core" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.HapMonitorPlatformApplication">
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../.." />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="HapMonitorCoreRestfulApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="hap-monitor-core-restful" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kuyuntech.hapmonitor.corerestful.HapMonitorCoreRestfulApplication" />
@@ -143,12 +118,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Spring Boot.HapMonitorCoreRestfulApplication" />
-      <item itemvalue="Spring Boot.HapMonitorCoreServiceApplication" />
-      <item itemvalue="Spring Boot.HapMonitorMobileApplication" />
-      <item itemvalue="Spring Boot.HapMonitorPlatformApplication" />
-    </list>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -167,19 +136,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a9a0341b-4de7-4879-a120-8d0a5ce879cd" name="Default Changelist" comment="" />
-      <created>1579015184628</created>
+      <changelist id="286dee33-7b77-40dd-a553-40a38bee133b" name="Default Changelist" comment="" />
+      <created>1579225387650</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1579015184628</updated>
-      <workItem from="1579015191144" duration="4276000" />
-      <workItem from="1579054809694" duration="23914000" />
-      <workItem from="1579138672162" duration="868000" />
-      <workItem from="1579141407829" duration="479000" />
-      <workItem from="1579141946240" duration="211000" />
-      <workItem from="1579142171223" duration="261000" />
-      <workItem from="1579142449981" duration="3504000" />
-      <workItem from="1579146117463" duration="19958000" />
+      <updated>1579225387650</updated>
+      <workItem from="1579225398390" duration="3449000" />
+      <workItem from="1579228938503" duration="19901000" />
     </task>
     <servers />
   </component>
@@ -187,129 +150,100 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="178" key="#Inspections" timestamp="1579158737207">
+    <state x="593" y="440" key="#xdebugger.evaluate" timestamp="1579233299035">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="178" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1579158737207" />
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579142141851">
+    <state x="593" y="440" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1579233299035" />
+    <state width="1873" height="379" key="GridCell.Tab.0.bottom" timestamp="1579256184311">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579142141851" />
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1579148276673">
+    <state width="1873" height="379" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579256184311" />
+    <state width="1873" height="379" key="GridCell.Tab.0.center" timestamp="1579256184310">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1579148276673" />
-    <state x="616" y="186" key="FileChooserDialogImpl" timestamp="1579142131103">
+    <state width="1873" height="379" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579256184310" />
+    <state width="1873" height="379" key="GridCell.Tab.0.left" timestamp="1579256184310">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="616" y="186" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1579142131103" />
-    <state width="1873" height="389" key="GridCell.Tab.0.bottom" timestamp="1579161240195">
+    <state width="1873" height="379" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579256184310" />
+    <state width="1873" height="379" key="GridCell.Tab.0.right" timestamp="1579256184311">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.0.bottom/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.0.center" timestamp="1579161240195">
+    <state width="1873" height="379" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579256184311" />
+    <state width="1873" height="607" key="GridCell.Tab.1.bottom" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.0.center/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.0.left" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.1.center" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.0.left/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.0.right" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.1.left" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.0.right/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.1.bottom" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.1.right" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.1.bottom/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.1.center" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.2.bottom" timestamp="1579256073688">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.1.center/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.1.left" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073688" />
+    <state width="1873" height="607" key="GridCell.Tab.2.center" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.1.left/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.1.right" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.2.left" timestamp="1579256073687">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.1.right/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.2.bottom" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073687" />
+    <state width="1873" height="607" key="GridCell.Tab.2.right" timestamp="1579256073688">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.2.bottom/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.2.center" timestamp="1579161240195">
+    <state width="1873" height="607" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579256073688" />
+    <state x="483" y="161" key="SettingsEditor" timestamp="1579228865995">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.2.center/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.2.left" timestamp="1579161240195">
+    <state x="483" y="161" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1579228865995" />
+    <state x="289" y="298" width="570" height="524" key="StructurePopup" timestamp="1579248202761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.2.left/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state width="1873" height="389" key="GridCell.Tab.2.right" timestamp="1579161240195">
+    <state x="289" y="298" width="570" height="524" key="StructurePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1579248202761" />
+    <state x="456" y="388" width="672" height="678" key="search.everywhere.popup" timestamp="1579256051361">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1873" height="389" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579161240195" />
-    <state width="1863" height="256" key="GridCell.Tab.2.right/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579019609594" />
-    <state x="193" y="323" key="SettingsEditor" timestamp="1579168051086">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="193" y="323" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1579168051086" />
-    <state x="360" y="104" key="SettingsEditor/1920.108.1920.1050/0.30.1920.1050@0.30.1920.1050" timestamp="1579018065265" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1579166139182">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579166139182" />
-    <state x="731" y="419" width="672" height="678" key="search.everywhere.popup" timestamp="1579169950181">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="731" y="419" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579169950181" />
+    <state x="456" y="388" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579256051361" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/UmsUserServiceImpl.java</url>
+          <line>110</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsCameraServiceImpl.java</url>
-          <line>271</line>
-          <option name="timeStamp" value="3" />
+          <line>182</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsGroupServiceImpl.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/hap-monitor-core-service/src/main/java/com/kuyuntech/hapmonitor/coreservice/service/core/impl/DmsAlarmServiceImpl.java</url>
-          <line>161</line>
-          <option name="timeStamp" value="8" />
+          <line>136</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/hap-monitor-platform/src/main/java/com/kuyuntech/hapmonitor/platform/interceptor/core/AuthAdminInterceptor.java</url>
+          <line>98</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="evaluateExpression">
-      <expression>
-        <expression-string>dmsAlarmBean.getStartTime()+&quot;&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dmsAlarmBean</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dmsAlarmBean.getStartTime()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
 </project>

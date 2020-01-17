@@ -7,9 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="hap-monitor-core-service" />
-        <module name="hap-monitor-core-restful" />
         <module name="hap-monitor-mobile" />
         <module name="hap-monitor-core-api" />
+        <module name="hap-monitor-core-restful" />
         <module name="hap-monitor-platform" />
       </profile>
     </annotationProcessing>

@@ -27,7 +27,7 @@ import java.util.List;
 public class DmsGroupBean  implements Serializable {
 
 
-    @NotBlank(groups = {ValidGroup.Add.class}, message = "分组名称不能为空")
+    @NotBlank(groups = {ValidGroup.Add.class, ValidGroup.Update.class}, message = "分组名称不能为空")
     private String name ;
 
     private Integer quantity ;

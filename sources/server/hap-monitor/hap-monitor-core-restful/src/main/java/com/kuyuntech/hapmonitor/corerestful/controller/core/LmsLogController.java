@@ -117,7 +117,7 @@ public class LmsLogController {
         lmsLogBeanPagerBean.getItems().forEach((e) ->{
              Map lmsLogMap = MapBuilder.newBuilder()
                                             .put("operator",e.getOperator())
-                                            .put("desc",e.getDesc())
+                                            .put("desc",e.getInfo())
                                             .put("target",e.getTarget())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
@@ -151,7 +151,7 @@ public class LmsLogController {
 
                 Map lmsLogMap = MapBuilder.newBuilder()
                         .put("operator",lmsLogBean.getOperator())
-                        .put("desc",lmsLogBean.getDesc())
+                        .put("desc",lmsLogBean.getInfo())
                         .put("target",lmsLogBean.getTarget())
                         .put("code",lmsLogBean.getCode())
                         .put("createTime",lmsLogBean.getCreateTime())

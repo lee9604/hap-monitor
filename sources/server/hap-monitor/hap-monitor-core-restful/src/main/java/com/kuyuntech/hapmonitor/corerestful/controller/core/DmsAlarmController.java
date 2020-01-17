@@ -110,7 +110,7 @@ public class DmsAlarmController {
     @RequestMapping
     public Object list(DmsAlarmBean dmsAlarmBean, PagerBean pagerBean){
 
-        PagerBean<DmsAlarmBean> dmsAlarmBeanPagerBean = this.dmsAlarmService.findPager(dmsAlarmBean,pagerBean, umsUserBean);
+        PagerBean<DmsAlarmBean> dmsAlarmBeanPagerBean = this.dmsAlarmService.findPager(dmsAlarmBean,pagerBean, null);
 
         List<Map> dmsAlarmMapList = new ArrayList<>();
 

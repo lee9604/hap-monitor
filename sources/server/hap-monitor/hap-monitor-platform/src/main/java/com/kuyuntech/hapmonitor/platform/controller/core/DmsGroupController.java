@@ -4,16 +4,18 @@ import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsGroupBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsGroupService;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
-import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
 import com.wbspool.fastboot.core.common.bean.ResponseBean;
 import com.wbspool.fastboot.core.common.builder.MapBuilder;
 import com.wbspool.fastboot.core.common.constant.ValidGroup;
 import com.wbspool.fastboot.core.web.annotation.ParamErrorAutoResponse;
 import com.wbspool.fastboot.core.web.result.ParamErrorResultBuilder;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +36,9 @@ import java.util.Map;
 public class DmsGroupController {
 
     private static final Logger logger = LoggerFactory.getLogger(DmsGroupController.class);
+
+    @Value("${md5.salt}")
+    private String SALT;
 
     @Autowired
     DmsGroupService dmsGroupService;
@@ -75,7 +80,7 @@ public class DmsGroupController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object update(@Validated(ValidGroup.Update.class) DmsGroupBean dmsGroupBean){
+    public Object update(@Validated(ValidGroup.Update.class) DmsGroupBean dmsGroupBean, BindingResult result){
 
        dmsGroupBean = this.dmsGroupService.update(dmsGroupBean);
 
@@ -97,15 +102,26 @@ public class DmsGroupController {
     */
     @RequestMapping
     @ParamErrorAutoResponse
-    public Object delete(@Validated(ValidGroup.Delete.class) DmsGroupBean dmsGroupBean){
+    public Object delete(@Validated(ValidGroup.Delete.class) DmsGroupBean dmsGroupBean, String password, HttpServletRequest request){
+
+        if (StringUtils.isBlank(password)) {
+            return ResponseBean.unAuthorize("密码不能为空！");
+        }
+
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        if (!umsUserBean.getPassword().equals(DigestUtils.md5Hex(password + SALT))) {
+            return ResponseBean.unAuthorize("密码错误！");
+        }
 
          dmsGroupBean = this.dmsGroupService.delete(dmsGroupBean);
 
           if (dmsGroupBean == null) {
-             return ResponseBean.serverError("操作失败！");
+             return ResponseBean.serverError("删除失败！");
           }
 
-          return ResponseBean.success("操作成功！");
+          return ResponseBean.success("删除成功！");
 
     }
 
@@ -132,7 +148,6 @@ public class DmsGroupController {
                                             .put("quantity",e.getQuantity())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
-                                            .put("cameraList",e.getDmsCameraSimpleBeanList())
                                             .build();
                     dmsGroupMapList.add(dmsGroupMap);
              });
@@ -194,4 +209,30 @@ public class DmsGroupController {
         return ResponseBean.success("操作成功！");
     }
 
+
+    @RequestMapping
+    public Object listWithCameras(DmsGroupBean dmsGroupBean, PagerBean pagerBean, HttpServletRequest request){
+
+        String code = (String) request.getSession().getAttribute("code");
+        UmsUserBean umsUserBean = umsUserService.find(code);
+
+        PagerBean<DmsGroupBean> dmsGroupBeanPagerBean = this.dmsGroupService.findPager(dmsGroupBean,pagerBean, umsUserBean);
+
+        List<Map> dmsGroupMapList = new ArrayList<>();
+
+        dmsGroupBeanPagerBean.getItems().forEach((e) ->{
+            Map dmsGroupMap = MapBuilder.newBuilder()
+                    .put("name",e.getName())
+                    .put("quantity",e.getQuantity())
+                    .put("code",e.getCode())
+                    .put("createTime",e.getCreateTime())
+                    .put("cameraList",e.getDmsCameraSimpleBeanList())
+                    .build();
+            dmsGroupMapList.add(dmsGroupMap);
+        });
+
+
+        return ResponseBean.success("操作成功！").addData("dmsGroups",dmsGroupMapList).addData("pager",dmsGroupBeanPagerBean.simplePager());
+
+    }
 }

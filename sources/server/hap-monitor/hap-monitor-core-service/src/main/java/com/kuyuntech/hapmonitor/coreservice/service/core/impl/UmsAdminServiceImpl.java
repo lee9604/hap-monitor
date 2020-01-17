@@ -4,6 +4,7 @@ package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsAdminBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.UmsAdminService;
+import com.kuyuntech.hapmonitor.coreapi.service.core.UmsUserService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsAdminDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserDao;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsAdmin;
@@ -19,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -48,6 +48,9 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
 
     @Autowired
     UmsUserDao umsUserDao;
+
+    @Autowired
+    UmsUserService umsUserService;
 
     @Override
     public UmsAdminBean add(UmsAdminBean umsAdminBean) {
@@ -268,8 +271,9 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
     }
 
     @Override
+    @Transactional
     public UmsUserBean deleteUmsUser(UmsUserBean umsUserBean) {
-        if (umsUserBean == null) {
+        if (null == umsUserBean) {
             return null;
         }
 
@@ -279,21 +283,27 @@ public class UmsAdminServiceImpl extends AbstractFastbootService<UmsAdmin, UmsAd
             return null;
         }
 
-        // 判断删除的用户是否是一级用户，若是则删除一级用户名下的二级用户
-        if (umsUser.getRoleId() == 2) {
-            List<UmsUser> umsUserList = umsUserDao.findUmsUsersByParentId(umsUser.getId());
+
+        List<UmsUser> umsUserList = umsUserDao.findUmsUsersByParentId(umsUser.getId());
+        if (null != umsUserList) {
             for (UmsUser user : umsUserList) {
-                UmsUserBean umsUserBeanTemp = new UmsUserBean();
-                BeanUtils.copyProperties(user, umsUserBeanTemp);
-                this.delete(umsUserBeanTemp);
+                // 判断删除的用户是否是一级用户，若是则删除一级用户名下的二级用户
+                if (user.getRoleId() == 2) {
+                    List<UmsUser> umsUserChildrenList = umsUserDao.findUmsUsersByParentId(user.getId());
+                    for (UmsUser userChildren : umsUserChildrenList) {
+                        userChildren.setValid(INVALID);
+                        umsUserDao.save(userChildren);
+                    }
+                }
+                user.setValid(INVALID);
+                umsUserDao.save(user);
             }
         }
-
 
         umsUser.setValid(INVALID);
         umsUserDao.save(umsUser);
 
-        domainToBean(umsUser, umsUserBean);
+        BeanUtils.copyProperties(umsUser, umsUserBean);
 
         return umsUserBean;
     }

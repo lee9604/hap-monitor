@@ -2,6 +2,7 @@ package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
 import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraSimpleBean;
+import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsGroupBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserGroupRelationBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsGroupService;
@@ -10,29 +11,26 @@ import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsCameraDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsGroupDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsCamera;
-import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsGroupBean;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsGroup;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
-
-import java.util.List;
-
+import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.BeanUtils;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-
-import java.util.ArrayList;
-
-import org.hibernate.criterion.Order;
-import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.INVALID;
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.VALID;
 
 
 /**
@@ -63,14 +61,17 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
 
 
         DmsGroup dmsGroup = new DmsGroup();
+
+        // 初始化
+        dmsGroupBean.setQuantity(0);
+
         beanToDomain(dmsGroupBean, dmsGroup, "id");
         DmsGroup dmsGroupTemp = dmsGroupDao.save(dmsGroup);
 
-        UmsUserGroupRelationBean umsUserGroupRelationBean = new UmsUserGroupRelationBean();
-        umsUserGroupRelationBean.setUserId(umsUserBean.getId());
-        umsUserGroupRelationBean.setGroupId(dmsGroupTemp.getId());
-
-        umsUserGroupRelationService.add(umsUserGroupRelationBean);
+//        UmsUserGroupRelationBean umsUserGroupRelationBean = new UmsUserGroupRelationBean();
+//        umsUserGroupRelationBean.setUserId(umsUserBean.getId());
+//        umsUserGroupRelationBean.setGroupId(dmsGroupTemp.getId());
+//        umsUserGroupRelationService.add(umsUserGroupRelationBean);
 
         domainToBean(dmsGroup, dmsGroupBean);
         return dmsGroupBean;
@@ -92,7 +93,7 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
             return null;
         }
 
-        beanToDomain(dmsGroupBean, dmsGroup, "id", "code", "version", "createTime", "updateTime", "valid");
+        beanToDomain(dmsGroupBean, dmsGroup, "id", "code", "version", "createTime", "updateTime", "valid", "quantity");
 
         dmsGroupDao.save(dmsGroup);
 
@@ -102,6 +103,7 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
     }
 
     @Override
+    @Transactional
     public DmsGroupBean delete(DmsGroupBean dmsGroupBean) {
 
         if (dmsGroupBean == null) {
@@ -114,6 +116,15 @@ public class DmsGroupServiceImpl extends AbstractFastbootService<DmsGroup, DmsGr
 
         if (dmsGroup == null) {
             return null;
+        }
+
+        // 删除分组下所有的设备
+        List<DmsCamera> dmsCameraList = dmsCameraDao.findDmsCamerasByGroupId(dmsGroupBean.getId());
+        if (dmsCameraList != null && !dmsCameraList.isEmpty()) {
+            for (DmsCamera dmsCamera : dmsCameraList) {
+                dmsCamera.setValid(INVALID);
+                dmsCameraDao.save(dmsCamera);
+            }
         }
 
 

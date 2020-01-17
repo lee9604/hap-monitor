@@ -2,6 +2,16 @@ package com.kuyuntech.hapmonitor.coreapi.constant.core;
 
 public class CustomValidGroup {
 
+    public interface AddUmsUser{};
+
+    public interface AddByCustomer{};
+
+    public interface AddAdmin{};
+
+    public interface AddByAdmin{};
+
+    public interface UpdateAdmin{};
+
     // 更新Level1
     public interface UpdateLevelOne{};
 

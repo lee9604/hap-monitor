@@ -17,7 +17,7 @@ public interface UmsUserService  {
      * @param umsUserBean 新增参数
      * @return 如果成功返回对应bean，否则返回null
      */
-     UmsUserBean add(UmsUserBean umsUserBean);
+     UmsUserBean add(UmsUserBean umsUserBean, UmsUserBean loginUserBean);
 
     /**
      * 更新记录
@@ -104,4 +104,16 @@ public interface UmsUserService  {
     UmsUserBean updateLevelOneUser(UmsUserBean umsUserBean);
 
     UmsUserBean updateLevelTwoUser(UmsUserBean umsUserBean);
+
+    UmsUserBean addAdmin(UmsUserBean umsUserBean);
+
+    PagerBean<UmsUserBean> findPagerAdmin(UmsUserBean umsUserBean, PagerBean pagerBean);
+
+    List<UmsUserBean> findAllAdmin(UmsUserBean umsUserBean, PagerBean pagerBean);
+
+    UmsUserBean updateAdmin(UmsUserBean umsUserBean);
+
+    UmsUserBean addUmsUser(UmsUserBean umsUserBean);
+
+    UmsUserBean updateUmsUser(UmsUserBean umsUserBean);
 }

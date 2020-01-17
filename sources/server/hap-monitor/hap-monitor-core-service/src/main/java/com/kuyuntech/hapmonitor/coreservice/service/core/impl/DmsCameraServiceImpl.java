@@ -1,6 +1,7 @@
 package com.kuyuntech.hapmonitor.coreservice.service.core.impl;
 
 
+import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
 import com.kuyuntech.hapmonitor.coreapi.bean.core.UmsUserBean;
 import com.kuyuntech.hapmonitor.coreapi.service.core.DmsCameraService;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsAlarmDao;
@@ -8,34 +9,31 @@ import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsCameraDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.DmsGroupDao;
 import com.kuyuntech.hapmonitor.coreservice.dao.core.UmsUserGroupRelationDao;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsAlarm;
+import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsCamera;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsGroup;
 import com.kuyuntech.hapmonitor.coreservice.domain.core.UmsUserGroupRelation;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.kuyuntech.hapmonitor.coreapi.bean.core.DmsCameraBean;
-import com.kuyuntech.hapmonitor.coreservice.domain.core.DmsCamera;
 import com.wbspool.fastboot.core.common.bean.PagerBean;
-
-import java.util.HashMap;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.BeanUtils;
+import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import com.wbspool.fastboot.core.jpa.service.AbstractFastbootService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.INVALID;
+import static com.wbspool.fastboot.core.jpa.constant.DataValidTypes.VALID;
 
 
 /**
@@ -64,14 +62,19 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera, Dms
     public DmsCameraBean add(DmsCameraBean dmsCameraBean) {
 
         DmsCamera dmsCamera = new DmsCamera();
+        // 初始化
+        dmsCameraBean.setState((short) 1);
+
         beanToDomain(dmsCameraBean, dmsCamera, "id");
 
-        DmsGroup dmsGroup = dmsGroupDao.findDmsGroupById(dmsCameraBean.getGroupId());
+        if (null != dmsCameraBean.getGroupId()) {
+            DmsGroup dmsGroup = dmsGroupDao.findDmsGroupById(dmsCameraBean.getGroupId());
 
-        // 同步更新group设备数
-        Integer oldQuantity = dmsGroup.getQuantity();
-        dmsGroup.setQuantity(oldQuantity + 1);
-        dmsGroupDao.save(dmsGroup);
+            // 同步更新group设备数
+            Integer oldQuantity = dmsGroup.getQuantity();
+            dmsGroup.setQuantity(oldQuantity + 1);
+            dmsGroupDao.save(dmsGroup);
+        }
 
         dmsCameraDao.save(dmsCamera);
         domainToBean(dmsCamera, dmsCameraBean);
@@ -80,7 +83,6 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera, Dms
     }
 
     @Override
-    @Transactional
     public DmsCameraBean update(DmsCameraBean dmsCameraBean) {
 
         if (dmsCameraBean == null) {
@@ -95,14 +97,29 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera, Dms
             return null;
         }
 
+        // 更新设备关联的分组情况
+        if (dmsCamera.getGroupId() != dmsCameraBean.getGroupId()) {
+            // 查询出旧的dmsGroup，并且更新dmsGroup的设备数
+            DmsGroup OldDmsGroup = dmsGroupDao.findDmsGroupById(dmsCamera.getGroupId());
+            OldDmsGroup.setQuantity(OldDmsGroup.getQuantity() - 1);
+            dmsGroupDao.save(OldDmsGroup);
+
+            // 查询出修改的分组，并且更新dmsGroup的设备数
+            DmsGroup newDmsGroup = dmsGroupDao.findDmsGroupById(dmsCameraBean.getGroupId());
+            newDmsGroup.setQuantity(newDmsGroup.getQuantity() + 1);
+            dmsGroupDao.save(newDmsGroup);
+        }
+
         // 忽略序列号，序列号不能修改
-        beanToDomain(dmsCameraBean, dmsCamera, "id", "code", "version", "createTime", "updateTime", "valid", "serialNum");
+        beanToDomain(dmsCameraBean, dmsCamera, "id", "code", "version", "createTime", "updateTime", "valid", "serialNum", "state");
 
         // 同步更新alarm的groupId
         List<DmsAlarm> dmsAlarmList = dmsAlarmDao.findDmsAlarmsByCameraId(dmsCameraBean.getId());
-        for (DmsAlarm dmsAlarm : dmsAlarmList) {
-            dmsAlarm.setGroupId(dmsCameraBean.getGroupId());
-            dmsAlarmDao.save(dmsAlarm);
+        if (null != dmsAlarmList) {
+            for (DmsAlarm dmsAlarm : dmsAlarmList) {
+                dmsAlarm.setGroupId(dmsCameraBean.getGroupId());
+                dmsAlarmDao.save(dmsAlarm);
+            }
         }
 
 
@@ -160,23 +177,26 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera, Dms
 
     @Override
     public List<DmsCameraBean> findAll(DmsCameraBean dmsCameraBean, PagerBean pagerBean, UmsUserBean umsUserBean) {
-
+        List<DmsCameraBean> dmsCameraBeans = new ArrayList<>();
 
         // 获取当前用户的所有分组
         List<UmsUserGroupRelation> umsUserGroupRelationList = umsUserGroupRelationDao.findUmsUserGroupRelationsByUserId(umsUserBean.getId());
+        // 若用户分组为空，则该用户下没用设备
+        if (umsUserGroupRelationList == null || umsUserGroupRelationList.isEmpty()) {
+            return dmsCameraBeans;
+        }
         List<Long> dmsGroupIdList = new ArrayList<>();
         for (UmsUserGroupRelation umsUserGroupRelation : umsUserGroupRelationList) {
             dmsGroupIdList.add(umsUserGroupRelation.getGroupId());
         }
 
-        List<DmsCameraBean> dmsCameraBeans = new ArrayList<>();
         DetachedCriteria detachedCriteria = createListCriteria(dmsCameraBean);
 
         // 添加分组ids查询条件
         detachedCriteria.add(Restrictions.in("groupId", dmsGroupIdList));
 
         // 按照创建时间逆序排序
-        detachedCriteria.addOrder(Order.desc("createTIme"));
+        detachedCriteria.addOrder(Order.desc("createTime"));
 
         if (null != dmsCameraBean.getGroupId()) {
             detachedCriteria.add(Restrictions.eq("groupId", dmsCameraBean.getGroupId()));
@@ -189,6 +209,10 @@ public class DmsCameraServiceImpl extends AbstractFastbootService<DmsCamera, Dms
         }
 
         List<DmsCamera> dmsCameras = dmsCameraDao.findAll(detachedCriteria, pagerBean);
+        // 如果没有设备，则返回空列表
+        if (dmsCameras == null || dmsCameras.isEmpty()) {
+            return dmsCameraBeans;
+        }
         for (DmsCamera dmsCamera : dmsCameras) {
 
             DmsCameraBean dmsCameraBeanTemp = new DmsCameraBean();

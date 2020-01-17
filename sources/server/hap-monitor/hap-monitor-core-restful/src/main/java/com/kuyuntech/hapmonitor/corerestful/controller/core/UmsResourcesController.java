@@ -117,7 +117,7 @@ public class UmsResourcesController {
         umsResourcesBeanPagerBean.getItems().forEach((e) ->{
              Map umsResourcesMap = MapBuilder.newBuilder()
                                             .put("url",e.getUrl())
-                                            .put("desc",e.getDesc())
+                                            .put("desc",e.getInfo())
                                             .put("code",e.getCode())
                                             .put("createTime",e.getCreateTime())
                                             .put("updateTime",e.getUpdateTime())
@@ -150,7 +150,7 @@ public class UmsResourcesController {
 
                 Map umsResourcesMap = MapBuilder.newBuilder()
                         .put("url",umsResourcesBean.getUrl())
-                        .put("desc",umsResourcesBean.getDesc())
+                        .put("desc",umsResourcesBean.getInfo())
                         .put("code",umsResourcesBean.getCode())
                         .put("createTime",umsResourcesBean.getCreateTime())
                         .put("updateTime",umsResourcesBean.getUpdateTime())

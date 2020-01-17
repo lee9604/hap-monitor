@@ -47,7 +47,7 @@ public class DmsGroupController {
     @ParamErrorAutoResponse
     public Object add(@Validated(ValidGroup.Add.class) DmsGroupBean dmsGroupBean){
 
-         dmsGroupBean = this.dmsGroupService.add(dmsGroupBean, umsUserBean);
+         dmsGroupBean = this.dmsGroupService.add(dmsGroupBean, null);
 
 
          if (dmsGroupBean == null) {

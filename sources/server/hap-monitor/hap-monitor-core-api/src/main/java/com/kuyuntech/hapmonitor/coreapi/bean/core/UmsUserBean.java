@@ -28,26 +28,59 @@ import java.util.List;
 public class UmsUserBean  implements Serializable {
 
 
-    @NotNull(groups = {CustomValidGroup.UpdateLevelOne.class, CustomValidGroup.UpdateLevelTow.class}, message =
+    @NotNull(groups = {CustomValidGroup.AddByCustomer.class,
+            ValidGroup.Add.class,
+            ValidGroup.Update.class,
+            CustomValidGroup.UpdateLevelOne.class,
+            CustomValidGroup.UpdateLevelTow.class,
+            CustomValidGroup.AddUmsUser.class}, message =
             "必须选择账号等级类型")
     private Long roleId ;
 
     private Long parentId ;
 
-    @NotBlank(groups = {ValidGroup.Add.class, ValidGroup.Update.class, CustomValidGroup.UpdateLevelOne.class, CustomValidGroup.UpdateLevelTow.class}, message =
+    @NotBlank(groups = {
+            CustomValidGroup.AddByCustomer.class,
+            CustomValidGroup.AddByAdmin.class,
+            CustomValidGroup.UpdateAdmin.class,
+            ValidGroup.Add.class,
+            ValidGroup.Update.class,
+            CustomValidGroup.UpdateLevelOne.class,
+            CustomValidGroup.UpdateLevelTow.class,
+            CustomValidGroup.AddUmsUser.class,
+            CustomValidGroup.AddAdmin.class},
+            message =
             "用户名不能为空")
     private String username ;
 
-    @NotBlank(groups = {ValidGroup.Add.class, ValidGroup.Update.class, CustomValidGroup.UpdateLevelOne.class, CustomValidGroup.UpdateLevelTow.class}, message =
+    @NotBlank(groups = {
+            CustomValidGroup.AddByCustomer.class,
+            CustomValidGroup.AddByAdmin.class,
+            CustomValidGroup.UpdateAdmin.class,
+            ValidGroup.Add.class,
+            ValidGroup.Update.class,
+            CustomValidGroup.UpdateLevelOne.class,
+            CustomValidGroup.UpdateLevelTow.class,
+            CustomValidGroup.AddUmsUser.class,
+            CustomValidGroup.AddAdmin.class},
+            message =
             "密码不能为空")
     private String password ;
 
-    @NotBlank(groups = {CustomValidGroup.UpdateLevelOne.class, CustomValidGroup.UpdateLevelTow.class}, message = "管理员姓名不能为空")
+    @NotBlank(groups = {
+            ValidGroup.Update.class,
+            CustomValidGroup.AddByCustomer.class,
+            CustomValidGroup.AddByAdmin.class,
+            CustomValidGroup.UpdateLevelOne.class,
+            CustomValidGroup.UpdateLevelTow.class,
+            CustomValidGroup.AddUmsUser.class},
+            message = "管理员姓名不能为空")
     private String name ;
 
     private String phone ;
 
-    @NotBlank(groups = {ValidGroup.Add.class, ValidGroup.Update.class}, message = "公司名称不能为空")
+    @NotBlank(groups = {ValidGroup.Add.class},
+            message = "公司名称不能为空")
     private String company ;
 
     private Long id ;
@@ -66,6 +99,16 @@ public class UmsUserBean  implements Serializable {
     private Integer cameraNum;
 
     // 分组ids
+    @NotNull(groups = {
+            ValidGroup.Update.class,
+            CustomValidGroup.AddByCustomer.class,
+            CustomValidGroup.AddUmsUser.class,
+            CustomValidGroup.UpdateLevelTow.class},
+            message = "至少选择一个分组")
     private List<Long> groupIdList;
+
+    private List<String> groupNameList;
+
+    private Short state;
 
 }

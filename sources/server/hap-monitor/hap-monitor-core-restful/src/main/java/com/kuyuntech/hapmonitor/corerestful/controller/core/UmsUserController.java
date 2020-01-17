@@ -47,7 +47,7 @@ public class UmsUserController {
     @ParamErrorAutoResponse
     public Object add(@Validated(ValidGroup.Add.class) UmsUserBean umsUserBean){
 
-         umsUserBean = this.umsUserService.add(umsUserBean);
+         umsUserBean = this.umsUserService.add(umsUserBean, null);
 
 
          if (umsUserBean == null) {
@@ -110,7 +110,7 @@ public class UmsUserController {
     @RequestMapping
     public Object list(UmsUserBean umsUserBean, PagerBean pagerBean){
 
-        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean,pagerBean, LoginUmsUserBean);
+        PagerBean<UmsUserBean> umsUserBeanPagerBean = this.umsUserService.findPager(umsUserBean,pagerBean, null);
 
         List<Map> umsUserMapList = new ArrayList<>();
 

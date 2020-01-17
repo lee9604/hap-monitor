@@ -22,4 +22,5 @@ public class UmsUser extends FastbootEntity {
     private String name;
     private String phone;
     private String company;
+    private Short state;
 }
